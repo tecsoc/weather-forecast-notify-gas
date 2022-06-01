@@ -3,11 +3,10 @@ name: Deploy
 
 on:
   push:
-　　 #branches: 自分は本番環境用yamlにはこちらを追加して，masterマージのみで反応
-するようにしてます．
-      - main
+　　 branches: 
+      - main # mainブランチのみに指定
     paths:
-      - '' #pushを検知したいパスを書く
+      - '' # pushを検知したいパスを書く
 
 jobs:
   deploy:
