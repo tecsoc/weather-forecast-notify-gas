@@ -2,10 +2,10 @@ name: Deploy
 
 on:
   push:
-　　 branches: 
-    - main # mainブランチのみに指定
-  paths:
-    - '' # pushを検知したいパスを書く
+    branches: 
+      - main # mainブランチのみに指定
+    paths:
+      - '' # pushを検知したいパスを書く
 
 jobs:
   deploy:
