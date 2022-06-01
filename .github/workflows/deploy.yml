@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main # mainブランチのみ反応するように指定
-    paths:
-      - '' #pushを検知したいパスを書く
 
 jobs:
-  deployment:
+  deploy:
     runs-on: ubuntu-latest
 
     env:
@@ -38,11 +36,12 @@ jobs:
       - name: Generate ~/.clasp.json
         run: |
           bash deployment/setup_claspjson.sh
+      - name: Move appsscript.json
+        run: |
+          mv appsscript.json ~/appsscript.json
       - name: Push
         run: |
-          cd src
           clasp push --force
       - name: DEPLOY
         run: |
-          cd src
           clasp deploy --deploymentId $DEPLOYMENT_ID
