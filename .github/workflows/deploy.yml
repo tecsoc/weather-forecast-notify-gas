@@ -36,9 +36,9 @@ jobs:
       - name: Generate ~/.clasp.json
         run: |
           bash deployment/setup_claspjson.sh
-      - name: Move appsscript.json
+      - name: Copy appsscript.json
         run: |
-          mv appsscript.json ~/appsscript.json
+          cp appsscript.json ~/appsscript.json
       - name: Push
         run: |
           clasp push --force

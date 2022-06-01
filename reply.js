@@ -1,3 +1,7 @@
+function testingtest(){
+  return 0;
+}
+
 function doPost(e) {
   // LINEから送信されたデータを取得（テキストメッセージそのものではない。）
   var json = e.postData.getDataAsString();
