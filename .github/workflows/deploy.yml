@@ -1,11 +1,12 @@
+
 name: Deploy
 
 on:
   push:
-    branches: 
-      - main # mainブランチのみに指定
+    branches:
+      - main # mainブランチのみ反応するように指定
     paths:
-      - '' # pushを検知したいパスを書く
+      - 'src/index.js' #pushを検知したいパスを書く
 
 jobs:
   deploy:
@@ -20,7 +21,7 @@ jobs:
       SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
       DEPLOYMENT_ID: ${{ secrets.DEPLOYMENT_ID }}
 
-     steps:
+    steps:
       - name: Setup repository
         uses: actions/checkout@v2
 
@@ -46,5 +47,3 @@ jobs:
         run: |
           cd src
           clasp deploy --deploymentId $DEPLOYMENT_ID
- 
-
