@@ -1,0 +1,12 @@
+{
+  "name": "WeatherForecastNotify",
+  "version": "1.0.0",
+  "main": "line.js",
+  "repository": "https://github.com/t-tecsoc/WeatherForecastNotify.git",
+  "author": "t-tecsoc <25559838+t-tecsoc@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google/clasp": "^2.4.1",
+    "@types/google-apps-script": "^1.0.47"
+  }
+}
