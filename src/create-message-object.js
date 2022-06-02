@@ -3,7 +3,7 @@ function getWeatherObject(title){
   var color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
   var parcent = getWeatherInfo();
   for(var i = 0; i < parcent.length; i++) {
-    title += `\n${parcent}%`;
+    title += "\n" + parcent[i] + "%";
   }
   var json =
   {

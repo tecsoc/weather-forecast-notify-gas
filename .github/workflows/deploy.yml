@@ -40,7 +40,7 @@ jobs:
           bash deployment/setup_claspjson.sh
       - name: Copy appsscript.json
         run: |
-          cp appsscript.json ~/appsscript.json
+          cp src/appsscript.json ~/appsscript.json
       - name: Push
         run: |
           cd src
