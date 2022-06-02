@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main # mainブランチのみ反応するように指定
+    path:
+      - 'src' # pushを検知したいパスを書く
 
 jobs:
   deploy:
@@ -41,7 +43,9 @@ jobs:
           cp appsscript.json ~/appsscript.json
       - name: Push
         run: |
+          cd src
           clasp push --force
       - name: DEPLOY
         run: |
+          cd src
           clasp deploy --deploymentId $DEPLOYMENT_ID
