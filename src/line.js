@@ -4,7 +4,7 @@ function morning(){
 }
 
 
-function myFunction() {
+function pushOwn() {
   pushMessage('Uc3ce448a6a7c68da0b4564bde5745fad');
 }
 
