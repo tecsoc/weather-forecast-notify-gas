@@ -1,7 +1,3 @@
-function testingtest(){
-  return 0;
-}
-
 function morning(){
   getWeather();
   pushMessageAll();
