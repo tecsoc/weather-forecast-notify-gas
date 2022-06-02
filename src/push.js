@@ -49,6 +49,7 @@ function pushMessage(USER_ID) {
     'payload': JSON.stringify(postData)
   };
   var response = UrlFetchApp.fetch(url, options);
+  Logger.log(response);
 }
 
 function pushMessageAll(){
