@@ -23,5 +23,6 @@
   "exceptionLogging": "STACKDRIVER",
   "executionApi": {
     "access": "ANYONE"
-  }
+  },
+  "runtimeVersion": "V8"
 }
