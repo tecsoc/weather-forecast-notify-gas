@@ -1,6 +1,11 @@
 var spreadsheet;
 var sheet;
 
+function getWeatherWeekly(){
+  let target_link = getWeatherLink("府県週間天気予報");
+  Logger.log(target_link);
+}
+
 function getWeather(){
   // XMLをパース
   var target_link = getWeatherLink('府県天気予報（Ｒ１）');
@@ -66,25 +71,7 @@ function getXML(url){
 }
 
 // 府県天気予報
-function getWeatherForecastLink(place){
-  if (!place) place = '東京';
-  var xml = getXML('https://www.data.jma.go.jp/developer/xml/feed/regular.xml');
-  // 名前空間の取得
-  var atom = XmlService.getNamespace('http://www.w3.org/2005/Atom');
-  // entry要素のlistを取得
-  var entries = xml.getRootElement().getChildren("entry", atom);
-  for (var i = 0; i < entries.length; i++) {
-    if (entries[i].getChildText('title', atom) === '府県天気予報（Ｒ１）') {
-      if (entries[i].getChildText('content', atom).indexOf(place) != -1) {
-        return entries[i].getChild('link', atom).getAttribute('href').getValue();
-      }
-    }
-  }
-}
-
-// 府県天気予報
-function getWeatherLink(type, place){
-  if (!place) place = '気象庁';
+function getWeatherLink(type, place="気象庁") {
   var xml = getXML('https://www.data.jma.go.jp/developer/xml/feed/regular_l.xml');
   // 名前空間の取得
   var atom = XmlService.getNamespace('http://www.w3.org/2005/Atom');
