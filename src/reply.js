@@ -135,7 +135,9 @@ function createEmptyData(token){
 
 function createWeatherMessageData(data){
   data.messages.push(getWeatherObject("今日の東京の天気"));
-  return pushTextMessage(data, getWeatherOverview());
+  data = pushTextMessage(data, getWeatherOverview());
+  data = pushTextMessage(data, getWeeklyWeather());
+  return data;
 }
 
 function pushTextMessage(data,message){
