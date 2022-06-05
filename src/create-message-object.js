@@ -1,14 +1,15 @@
 function getWeatherObject(title){
-  var time = ["00時","06時","12時","18時","24時"];
-  var color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
-  var parcent = getWeatherInfo();
+  let time = ["00時","06時","12時","18時","24時"];
+  let color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
+  let parcent = getWeatherInfo();
+  let altText = title;
   for(var i = 0; i < parcent.length; i++) {
-    title += "\n" + parcent[i];
+    altText += "\n" + parcent[i];
   }
   var json =
   {
     "type": "flex",
-    "altText": title,
+    "altText": altText,
     "contents": {
       "type": "bubble",
       "size": "micro",
@@ -76,7 +77,7 @@ function getWeatherObject(title){
             ],
             "flex": 0,
             "height": "30px",
-            "width": "22px"
+            "width": "22px",
           },
           {
             "type": "text",
@@ -112,7 +113,7 @@ function getWeatherObject(title){
                 }
               ],
               "margin": "sm",
-              "flex": 0
+              "flex": 1
             },
             {
               "type": "box",
@@ -124,29 +125,25 @@ function getWeatherObject(title){
                   "contents": [
                     {
                       "type": "filler",
-                      "flex": 1
+                      "flex": 9,
                     },
                     {
                       "type": "box",
                       "layout": "vertical",
-                      "contents": [
-                        {
-                          "type": "filler"
-                        }
-                      ],
-                      "width": "3px",
+                      "contents": [],
                       "backgroundColor": "#B7B7B7",
-                      "flex": 1
+                      "flex": 4,
                     },
                     {
                       "type": "filler",
-                      "flex": 1
+                      "flex": 9
                     }
                   ],
-                  "flex": 1
+                  "flex": 1,
+                  "width": "22px"
                 }
               ],
-              "width": "20px",
+              "flex": 1,
               "margin": "none"
             },
             {
