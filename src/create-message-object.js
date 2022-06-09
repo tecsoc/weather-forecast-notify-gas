@@ -100,23 +100,6 @@ function getWeatherObject(title){
           "contents": [
             {
               "type": "box",
-              "layout": "horizontal",
-              "contents": [
-                {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "filler"
-                    }
-                  ]
-                }
-              ],
-              "margin": "sm",
-              "flex": 1
-            },
-            {
-              "type": "box",
               "layout": "vertical",
               "contents": [
                 {
@@ -125,18 +108,18 @@ function getWeatherObject(title){
                   "contents": [
                     {
                       "type": "filler",
-                      "flex": 9,
+                      "flex": 4,
                     },
                     {
                       "type": "box",
                       "layout": "vertical",
                       "contents": [],
                       "backgroundColor": "#B7B7B7",
-                      "flex": 4,
+                      "flex": 2,
                     },
                     {
                       "type": "filler",
-                      "flex": 9
+                      "flex": 5
                     }
                   ],
                   "flex": 1,
