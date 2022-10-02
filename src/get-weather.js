@@ -174,13 +174,13 @@ function getWeeklyWeather() {
   let weeklyWeatherArray = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
   let messageStr = "";
   let weekdayArray = "日月火水木金土";
-  let dateObject = new Date(); // 今日の日付で初期化
   for(let i = 0; i < weeklyWeatherArray.length; i++) {
-    dateObject.setDate(dateObject.getDate() + 1); // 次の日にする
+    let dateObject = new Date(weeklyWeatherArray[i][0]);
     weeklyWeatherArray[i][0] = weeklyWeatherArray[i][0].replace(/[0-9]{4}\//,"");
     weeklyWeatherArray[i][0] += `(${weekdayArray[dateObject.getDay()]})`;
     weeklyWeatherArray[i][2] += "%";
     messageStr += weeklyWeatherArray[i].join(" ");
+    // 最後以外は改行を挿入
     if (i !== weeklyWeatherArray.length - 1) messageStr += "\n";
   }
   return messageStr;
