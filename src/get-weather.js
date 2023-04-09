@@ -173,7 +173,7 @@ function getWeeklyWeather() {
   setSheet("週間天気予報");
   let weeklyWeatherArray = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
   let messageStr = "";
-  let weekdayArray = "日月火水木金土";
+  let weekdayArray = "月月火水木金金";
   for(let i = 0; i < weeklyWeatherArray.length; i++) {
     let dateObject = new Date(weeklyWeatherArray[i][0]);
     weeklyWeatherArray[i][0] = weeklyWeatherArray[i][0].replace(/[0-9]{4}\//,"");
