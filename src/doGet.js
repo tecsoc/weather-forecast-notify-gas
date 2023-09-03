@@ -6,7 +6,11 @@ const doGet = (e) => {
     response.result = result;
   } else {
     const settings = getSetting(userId);
-    response.settings = settings;
+    if (settings.length) {
+      response.settings = settings;
+    } else {
+      response.error = `Not Found User: ${userId}`;
+    }
   }
   return returnJson(response);
 }

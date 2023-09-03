@@ -22,7 +22,7 @@ const setSetting = (userId, settings) => {
 const getSetting = (userId) => {
   setSheet('天気配信管理');
   const userIdIndex = getUserIndex(userId);
-  if (userIdIndex === -1) return false;
+  if (userIdIndex === -1) return [];
   const settings = getWeekdayRangeByUser(userIdIndex).getValues()[0];
   return settings;
 }
