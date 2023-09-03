@@ -25,8 +25,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
-          cache: pnpm
-          cache-dependency-path: ./pnpm-lock.yaml
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - name: pnmp install
         run: pnpm install --frozen-lockfile --prefer-offline
       - name: Setup clasp
@@ -41,4 +43,4 @@ jobs:
         working-directory: src
         run : |
           pnpm run push --force &&
-          pnpm run deploy -d ${{ github.event.head_commit.message }}
+          pnpm run deploy -d "${{ github.event.head_commit.message }}"
