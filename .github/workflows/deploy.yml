@@ -42,4 +42,4 @@ jobs:
         working-directory: src
         run : |
           pnpm push --force
-          pnpm deploy  --description ${{ github.event.head_commit.message }}
+          pnpm deploy --description ${{ github.event.head_commit.message }}
