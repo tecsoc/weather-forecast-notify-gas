@@ -3,7 +3,7 @@ function doPost(e) {
   
   if (json.type === 'updateSetting') {
     const response = setSetting(json.userId, json.settings);
-    return returnJson({ result: response });
+    if (!response) throw new Error('Failed to setting');
   }
 
   const event = json.events[0];
