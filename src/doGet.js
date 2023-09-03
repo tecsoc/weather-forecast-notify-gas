@@ -4,5 +4,5 @@ const doGet = (e) => {
   const response = {
     settings
   };
-  returnJson(response);
+  return returnJson(response);
 }
