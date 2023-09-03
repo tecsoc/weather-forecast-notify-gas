@@ -1,9 +1,9 @@
 function doPost(e) {
-  const json = JSON.parse(e.postData.contents);
+  const json = JSON.parse(e.postData.getDataAsString());
   
   if (json.type === 'updateSetting') {
     const result = setSetting(json.userId, json.settings);
-    return returnJson({result});
+    return returnJson({ result });
   }
   
   const event = json.events[0];
