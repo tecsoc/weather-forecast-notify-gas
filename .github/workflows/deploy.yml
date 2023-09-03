@@ -43,4 +43,4 @@ jobs:
         working-directory: src
         run : |
           pnpm run push --force &&
-          pnpm run deploy -d "${{ github.event.head_commit.message }}"
+          pnpm run deploy -d "${{ github.event.head_commit.message }}" --deploymentId $DEPLOYMENT_ID
