@@ -36,6 +36,8 @@ jobs:
         run: |
           bash setup.sh
           bash setup_claspjson.sh
+      - name: Move appsscript.json
+        run: mv src/appsscript.json ~/appsscript.json
       - name: Push & Deploy
         working-directory: src
         run : |
