@@ -1,13 +1,16 @@
 function doPost(e) {
-  // LINEから送信されたデータを取得（テキストメッセージそのものではない。）
-  var json = e.postData.getDataAsString();
-  var event = JSON.parse(e.postData.contents).events[0];
-  // LINEから送信されてきたデータから、リプライトークン（返信するために必要）を取得
+  const json = JSON.parse(e.postData.contents);
+  const event = json.events[0];
+  const userId = event.source.userId;
+  
+  if (json.type === 'updateSetting') {
+    const result = setSetting(userId, json.settings);
+    return returnJson({result});
+  }
+
   var token = event.replyToken;
   // 送信されてきたテキストを取り出し
   var text = event.message.text;
-  // 送信元のユーザーID取得
-  var userId = event.source.userId;
   // テンプレ返信メッセージ
   const templete = 'このアカウントは基本的に返信に対応してないよ。\n「@今日の天気」と送ると、今日の東京の天気が送られてくるよ！！';
   
@@ -23,7 +26,6 @@ function doPost(e) {
   if (text.match(/@詳細設定\n(.+)/)){
     var setting = text.replace(/@詳細設定\n(.+)/,'$1');
     setting = setting.split(',');
-    setSheet('天気配信管理');
     var range　= sheet.getRange(3, 2, sheet.getLastRow() - 2).getValues();
     var targetRow = -1;
     for(var i = 0; i < range.length; i++){
