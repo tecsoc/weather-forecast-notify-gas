@@ -1,11 +1,5 @@
 function doPost(e) {
   const json = JSON.parse(e.postData.contents);
-  
-  if (json.type === 'updateSetting') {
-    const response = setSetting(json.userId, json.settings);
-    if (!response) throw new Error('Failed to setting');
-  }
-
   const event = json.events[0];
   const userId = event.source.userId;
   var token = event.replyToken;
@@ -22,26 +16,7 @@ function doPost(e) {
   reply(headers, token, message)
   return 0;
   }*/
-  
-  if (text.match(/@詳細設定\n(.+)/)){
-    var setting = text.replace(/@詳細設定\n(.+)/,'$1');
-    setting = setting.split(',');
-    var range　= sheet.getRange(3, 2, sheet.getLastRow() - 2).getValues();
-    var targetRow = -1;
-    for(var i = 0; i < range.length; i++){
-      if(range[i].indexOf(userId) != -1){
-        targetRow = i + 3;
-        break;
-      }
-    }
-    if(targetRow != -1){
-      var arr = [setting];
-      sheet.getRange(targetRow,5,1,8).setValues(arr);
-      text = '@詳細設定完了';
-    }else{
-      text = 'エラーです';
-    }
-  }
+
   var data = createEmptyData(token);
   switch(text){
     case '@今日の天気':
@@ -49,14 +24,6 @@ function doPost(e) {
       data = pushTextMessage(data,readData(1));
       data = pushTextMessage(data,readData(2));*/
       data = createWeatherMessageData(data);
-      break;
-      
-    case 'はげ':
-      data = pushTextMessage(data,'ようハゲ！');
-      break;
-      
-    case 'よう':
-      data = pushTextMessage(data,'おっす！');
       break;
       
     case '@天気配信を設定':
