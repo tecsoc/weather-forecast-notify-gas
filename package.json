@@ -6,6 +6,7 @@
   "author": "t-tecsoc <25559838+t-tecsoc@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
+    "clasp": "clasp",
     "push": "clasp push",
     "deploy": "clasp deploy"
   },
