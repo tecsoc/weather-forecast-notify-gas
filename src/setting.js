@@ -12,7 +12,7 @@ const setSetting = (userId, settings) => {
   const userIdIndex = getUserIndex(userId);
   if (userIdIndex === -1) return false;
   try {
-    getWeekdayRange(userIdIndex).setValues([settings]);
+    getWeekdayRangeByUser(userIdIndex).setValues([settings]);
     return true;
   } catch {
     return false;
@@ -23,6 +23,6 @@ const getSetting = (userId) => {
   setSheet('天気配信管理');
   const userIdIndex = getUserIndex(userId);
   if (userIdIndex === -1) return false;
-  const settings = getWeekdayRange(userIdIndex).getValues()[0];
+  const settings = getWeekdayRangeByUser(userIdIndex).getValues()[0];
   return settings;
 }
