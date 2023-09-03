@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  init:
     runs-on: ubuntu-latest
 
     env:
@@ -36,13 +36,13 @@ jobs:
         run: |
           bash setup.sh
           bash setup_claspjson.sh
-      - name: Copy appsscript.json
-        run: cp src/appsscript.json ~/appsscript.json
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+    steps:
       - name: Push
-        run : |
-          cd src
-          pnpm run push --force
+        run: pnpm run push --force
       - name: Deploy
-        run: |
-          cd src
-          pnpm run deploy -d ${{ github.event.head_commit.message }}
+        run: pnpm run deploy -d ${{ github.event.head_commit.message }}
