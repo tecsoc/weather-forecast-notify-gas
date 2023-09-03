@@ -27,6 +27,8 @@ jobs:
           node-version-file: .nvmrc
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - name: pnmp install
         run: pnpm install --frozen-lockfile --prefer-offline
       - name: Setup clasp
