@@ -1,11 +1,11 @@
 function doPost(e) {
-  const json = JSON.parse(e.postData.getDataAsString());
+  const json = JSON.parse(e.postData.contents);
   
   if (json.type === 'updateSetting') {
-    const result = setSetting(json.userId, json.settings);
-    return returnJson({ result });
+    const response = setSetting(json.userId, json.settings);
+    return returnJson({ result: response });
   }
-  
+
   const event = json.events[0];
   const userId = event.source.userId;
   var token = event.replyToken;
