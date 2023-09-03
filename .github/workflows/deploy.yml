@@ -25,10 +25,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
       - name: pnmp install
         run: pnpm install --frozen-lockfile --prefer-offline
       - name: Setup clasp
