@@ -1,12 +1,16 @@
 {
-  "name": "WeatherForecastNotify",
+  "name": "weather-forecast-notify-gas",
   "version": "1.0.0",
   "main": "line.js",
   "repository": "https://github.com/t-tecsoc/WeatherForecastNotify.git",
   "author": "t-tecsoc <25559838+t-tecsoc@users.noreply.github.com>",
   "license": "MIT",
+  "scripts": {
+    "push": "clasp push",
+    "deploy": "clasp deploy"
+  },
   "dependencies": {
-    "@google/clasp": "^2.4.1",
-    "@types/google-apps-script": "^1.0.47"
+    "@google/clasp": "^2.4.2",
+    "@types/google-apps-script": "^1.0.67"
   }
 }

@@ -3,9 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main # mainブランチのみ反応するように指定
-    path:
-      - 'src' # pushを検知したいパスを書く
+      - main
 
 jobs:
   deploy:
@@ -22,30 +20,22 @@ jobs:
 
     steps:
       - name: Setup repository
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
-
-      - name: Install Clasp
-        run: npm install -g @google/clasp
-
-      - name: Generate ~/.clasprc.json
+          node-version-file: .nvmrc
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+      - name: pnmp install
+        run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Setup clasp
+        working-directory: deployment
         run: |
-          bash deployment/setup.sh
-      - name: Generate ~/.clasp.json
-        run: |
-          bash deployment/setup_claspjson.sh
-      - name: Copy appsscript.json
-        run: |
-          cp src/appsscript.json ~/appsscript.json
-      - name: Push
-        run: |
-          cd src
-          clasp push --force
-      - name: DEPLOY
-        run: |
-          cd src
-          clasp deploy --deploymentId $DEPLOYMENT_ID
+          bash setup.sh
+          bash setup_claspjson.sh
+      - name: Push & Deploy
+        working-directory: src
+        run : |
+          pnpm push --force
+          pnpm deploy --deploymentId $DEPLOYMENT_ID
