@@ -36,10 +36,10 @@ jobs:
         run: |
           bash setup.sh
           bash setup_claspjson.sh
-      - name: Move appsscript.json
-        run: mv src/appsscript.json ~/appsscript.json
+      - name: Copy appsscript.json
+        run: cp src/appsscript.json ~/appsscript.json
       - name: Push & Deploy
         working-directory: src
         run : |
           pnpm push --force
-          pnpm deploy --description ${{ github.event.head_commit.message }}
+          pnpm deploy -d ${{ github.event.head_commit.message }}

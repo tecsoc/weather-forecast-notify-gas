@@ -8,6 +8,8 @@ dependencies:
   '@google/clasp':
     specifier: ^2.4.2
     version: 2.4.2
+
+devDependencies:
   '@types/google-apps-script':
     specifier: ^1.0.67
     version: 1.0.67
@@ -99,7 +101,7 @@ packages:
 
   /@types/google-apps-script@1.0.67:
     resolution: {integrity: sha512-sJfwEKAfWMB22SRbNqfsr7MWVjaYT97eKl8DBTB3uVLJd4jpGibcFSsVqCuFuewzJgjLzj0aSC4gbaFyf3EpXg==}
-    dev: false
+    dev: true
 
   /@types/http-cache-semantics@4.0.1:
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
