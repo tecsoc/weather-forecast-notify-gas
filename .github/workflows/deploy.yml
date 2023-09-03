@@ -41,8 +41,8 @@ jobs:
       - name: Push
         run : |
           cd src
-          pnpm push --force
+          pnpm run push --force
       - name: Deploy
         run: |
           cd src
-          pnpm deploy -d ${{ github.event.head_commit.message }}
+          pnpm run deploy -d ${{ github.event.head_commit.message }}
