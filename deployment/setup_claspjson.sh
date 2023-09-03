@@ -2,7 +2,7 @@
 
 CLASPJSON=$(cat <<-END
   {
-    "scriptId": "$SCRIPT_ID"
+    "scriptId": "$SCRIPT_ID",
     "rootDir": "src"
   }
 END
