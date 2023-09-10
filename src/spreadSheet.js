@@ -169,7 +169,7 @@ class SpreadSheet {
         rainfallProbabilityPercent[rainfallProbabilityPercent.length - i] = row[this.RainfallProbabilityPercentColumn - 1];
       }
     });
-    return parcent;
+    return rainfallProbabilityPercent;
   }
 
   getWeatherOverview(){
