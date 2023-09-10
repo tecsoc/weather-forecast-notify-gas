@@ -16,8 +16,13 @@ class LineApiClient {
       },
       muteHttpExceptions: true
     };
-    const response = UrlFetchApp.fetch(requestUrl, options);
-    return getJsonFromResponse(response);
+    try {
+      const response = UrlFetchApp.fetch(requestUrl, options);
+      return getJsonFromResponse(response);
+    } catch (e) {
+      console.error(e);
+      throw new Error('LINEからの取得に失敗しました');
+    }
   }
 
   getUserName(userId) {
