@@ -157,7 +157,7 @@ class SpreadSheet {
 
   getRainfallProbabilityPercentList(){
     this.setRainfallProbabilitySheet();
-    const rainfallProbabilityData = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
+    const rainfallProbabilityData = this.sheet.getRange(1, 1, this.sheet.getLastRow(), this.sheet.getLastColumn()).getDisplayValues();
     console.log(`降水確率:\n${rainfallProbabilityData}`);
     // 降水確率の配列の初期化
     const rainfallProbabilityPercent = Array.from({ length: 4 }, () => "-- %" );
@@ -179,7 +179,7 @@ class SpreadSheet {
 
   getWeeklyWeatherForecast() {
     this.setWeeklyWeatherForecastSheet();
-    const weeklyWeatherForecastList = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
+    const weeklyWeatherForecastList = this.sheet.getRange(1, 1, this.sheet.getLastRow(), this.sheet.getLastColumn()).getDisplayValues();
     const weekdayArray = "日月火水木金土";
     const messages = weeklyWeatherForecastList.map((row) => {
       const dateObject = new Date(row[0]);
