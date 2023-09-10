@@ -1,12 +1,10 @@
-function getWeatherObject(title){
-  let time = ["00時","06時","12時","18時","24時"];
-  let color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
-  let parcent = getWeatherInfo();
-  let altText = title;
-  for(var i = 0; i < parcent.length; i++) {
-    altText += "\n" + parcent[i];
-  }
-  var json =
+function pushLichRainfallProbabilityMessage(payload, title){
+  const time = ["00時","06時","12時","18時","24時"];
+  const color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
+  const parcent = getWeatherInfo();
+  const altText = [title, ...parcent].join("\n");
+
+  const json =
   {
     "type": "flex",
     "altText": altText,
@@ -38,11 +36,6 @@ function getWeatherObject(title){
       }
     }
   };
-  /*b["contents"]["body"]["contents"].push(
-    {
-      "type": "filler"
-    }
-  );*/
   
   for (var i = 1; i <= 5; i++) {
     json['contents']['body']['contents'].push(
@@ -155,18 +148,19 @@ function getWeatherObject(title){
     }
   }
   
-  return json;
+  payload.messages.push(json);
+  return payload;
 }
 
 
 function tt(){
-  Logger.log(getWeatherObject('test')["contents"]);
+  console.log(pushLichRainfallProbabilityMessage('test')["contents"]);
 }
 
 function getWeatherInfo(){
   setSheet('降水確率');
   var weather_info = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
-  Logger.log(weather_info);
+  console.log(weather_info);
   // 降水確率の配列の初期化
   var parcent = Array.apply(null, Array(4)).map(function () {return "-- %" });
   // 今日の日付をyyyy/mm/dd 形式で取得
@@ -178,6 +172,6 @@ function getWeatherInfo(){
       parcent_array_count++;
     }
   }
-  Logger.log(parcent)
+  console.log(parcent)
   return parcent;
 }
