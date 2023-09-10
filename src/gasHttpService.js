@@ -20,11 +20,11 @@ const doGet = (e) => {
 const doPost = (e) => {
   const json = JSON.parse(e.postData.contents);
   const event = json.events[0];
-  const [id, name] = getEventSourceInfo(event.source);
+  const lineClient = new LineApiClient();
+  const [id, name] = lineClient.getEventSourceInfo(event.source);
   const token = event.replyToken;
 
   const sheet = new SpreadSheet();
-  const lineClient = new LineApiClient();
   
   let payload = {
     replyToken: token,

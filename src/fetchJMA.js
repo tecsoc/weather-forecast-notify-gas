@@ -5,11 +5,16 @@ class fetchJMA {
   }
 
   getXML(url){
-    let options = {
+    const options = {
       muteHttpExceptions: true
     };
-    let xmlStr = UrlFetchApp.fetch(url, options);
-    return XmlService.parse(xmlStr);
+    try{
+      const xmlStr = UrlFetchApp.fetch(url, options);
+      return XmlService.parse(xmlStr);
+    } catch (e) {
+      console.error(e);
+      throw new Error('XMLの取得に失敗しました');
+    }
   //  return XmlService.parse(UrlFetchApp.fetch(url)).getContentText();
   }
 

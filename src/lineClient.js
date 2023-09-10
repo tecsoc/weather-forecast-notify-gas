@@ -10,11 +10,13 @@ class LineApiClient {
 
   getFetch(path) {
     const requestUrl = this.lineBaseEndpoint + path;
-    const response = UrlFetchApp.fetch(requestUrl, {
-      'headers': {
-        'Authorization': this.secret
-      }
-    });
+    const options = {
+      headers: {
+        Authorization: this.secret
+      },
+      muteHttpExceptions: true
+    };
+    const response = UrlFetchApp.fetch(requestUrl, options);
     return getJsonFromResponse(response);
   }
 
@@ -108,12 +110,18 @@ class LineApiClient {
       'Authorization': this.secret
     };
     const options = {
-      'method': 'post',
-      'headers': headers,
-      'payload': JSON.stringify(payload)
+      method: 'post',
+      headers: headers,
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
     };
-    const response = UrlFetchApp.fetch(requestUrl, options);
-    return getJsonFromResponse(response);
+    try {
+      const response = UrlFetchApp.fetch(requestUrl, options);
+      return getJsonFromResponse(response);
+    } catch (e) {
+      console.error(e);
+      throw new Error('LINEへの送信に失敗しました');
+    }
   }
 
   reply(payload) {
