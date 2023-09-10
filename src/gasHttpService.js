@@ -24,6 +24,7 @@ const doPost = (e) => {
   const token = event.replyToken;
 
   const sheet = new SpreadSheet();
+  const lineClient = new LineApiClient();
   
   let payload = {
     replyToken: token,
@@ -55,26 +56,23 @@ const doPost = (e) => {
     // 送信されてきたテキストを取り出し
     const text = event.message.text;
     // テンプレ返信メッセージ
-    const templete = 'このアカウントは基本的に返信に対応してないよ。\n「@今日の天気」と送ると、今日の東京の天気が送られてくるよ！！';
+    const templeteMessage = 'このアカウントは基本的に返信に対応してないよ。\n「@今日の天気」と送ると、今日の東京の天気が送られてくるよ！！';
 
     switch(text){
       case '@今日の天気':
-        payload = createTemplateMessage(payload, sheet);
+        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet);
         break;
         
       case 'デバッグ':
-        payload = pushTextMessage(payload,'デバッグお疲れ様です');
+        payload = lineClient.pushTextMessage(payload,'デバッグお疲れ様です');
         break;
         
       default:
-        if (text.match(/おうむ|オウム/)){
-          payload = pushTextMessage(payload,'オウムじゃないよ？？');
-        } else {
-          payload = pushTextMessage(payload,templete);
-          break;
-        }
+        const message = text.match(/おうむ|オウム/) ? 'オウムじゃないよ？？' : templeteMessage;
+        payload = lineClient.pushTextMessage(payload, message);
+        break;
     }
   }
 
-  reply(payload);
+  lineClient.reply(payload);
 }
