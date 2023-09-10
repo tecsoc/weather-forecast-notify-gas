@@ -105,7 +105,7 @@ class SpreadSheet {
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return [];
     const settings = this.sheet.getRange(...this.getWeekdayRangeByUser(userIdIndex)).getValues();
-    return settings;
+    return settings[0];
   }
 
   // 論理削除フラグを変更
