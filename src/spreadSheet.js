@@ -3,22 +3,24 @@ const editing = {};
 class SpreadSheet {
   
   constructor() {
-    const UserIdColumn = 2;
-    const UserNameColumn = 3;
+    this.UserIdColumn = 2;
+    this.UserNameColumn = 3;
     // 配信有効設定列
-    const LogicalDeleteFlagColumn = 4;
-    const DeliverySettingLastColumn = 12;
-    const DeliverySettingFirstColumn = 5;
-    const SettingLength = DeliverySettingLastColumn - DeliverySettingFirstColumn + 1;
-    const FirstDataRow = 3;
-    const RainfallProbabilityPercentColumn = 3;
+    this.LogicalDeleteFlagColumn = 4;
+    this.DeliverySettingLastColumn = 12;
+    this.DeliverySettingFirstColumn = 5;
+    this.SettingLength = this.DeliverySettingLastColumn - this.DeliverySettingFirstColumn + 1;
+    this.FirstDataRow = 3;
+    this.RainfallProbabilityPercentColumn = 3;
     // 排他待機時間
-    const waitTimeForExclusive = 500;
+    this.waitTimeForExclusive = 500;
+
+    const sheetId = PropertiesService.getScriptProperties().getProperty('sheetId');
+    if (!sheetId) throw new Error('シートIDが不正です');
+    this.sheet = SpreadsheetApp.openById(sheetId);
   }
 
   setSheet(sheetName) {
-    const sheetId = PropertiesService.getScriptProperties().getProperty('sheetId');
-    if (!sheetId) throw new Error('シートIDが不正です');
     try {
       const spreadsheet = SpreadsheetApp.openById(sheetId);
       this.sheet = spreadsheet.getSheetByName(sheetName);
