@@ -1,20 +1,20 @@
-
-let sheet;
+const editing = {};
 
 class SpreadSheet {
-  static UserIdColumn = 2;
-  static UserNameColumn = 3;
-  // 配信有効設定列
-  static LogicalDeleteFlagColumn = 4;
-  static DeliverySettingLastColumn = 12;
-  static DeliverySettingFirstColumn = 5;
-  static SettingLength = DeliverySettingLastColumn - DeliverySettingFirstColumn + 1;
-  static FirstDataRow = 3;
-  static RainfallProbabilityPercentColumn = 3;
-  static editing = {};
-  // 排他待機時間
-  static waitTimeForExclusive = 500;
-  sheet;
+  
+  constructor() {
+    const UserIdColumn = 2;
+    const UserNameColumn = 3;
+    // 配信有効設定列
+    const LogicalDeleteFlagColumn = 4;
+    const DeliverySettingLastColumn = 12;
+    const DeliverySettingFirstColumn = 5;
+    const SettingLength = DeliverySettingLastColumn - DeliverySettingFirstColumn + 1;
+    const FirstDataRow = 3;
+    const RainfallProbabilityPercentColumn = 3;
+    // 排他待機時間
+    const waitTimeForExclusive = 500;
+  }
 
   setSheet(sheetName) {
     const sheetId = PropertiesService.getScriptProperties().getProperty('sheetId');
@@ -23,7 +23,7 @@ class SpreadSheet {
       const spreadsheet = SpreadsheetApp.openById(sheetId);
       this.sheet = spreadsheet.getSheetByName(sheetName);
       this.sheetName = sheetName;
-      SpreadSheet.editing = {
+      editing = {
         sheetName,
         range: {}
       }
@@ -34,9 +34,9 @@ class SpreadSheet {
   }
 
   canEdit(targetFirstRow, targetFirstColumn, targetLastRow = 1, targetLastColumn = 1) {
-    if (SpreadSheet.editing.sheetId !== this.sheetName) return true;
-    if (Object.keys(SpreadSheet.editing.range).length === 0) return true;
-    const  { firstRow, firstColumn, lastRow, lastColumn } = SpreadSheet.editing.range;
+    if (editing.sheetId !== this.sheetName) return true;
+    if (Object.keys(editing.range).length === 0) return true;
+    const  { firstRow, firstColumn, lastRow, lastColumn } = editing.range;
     if (firstRow > targetFirstRow && lastRow < targetLastRow && firstColumn > targetFirstColumn && lastColumn < targetLastColumn) {
       return  true;
     }
@@ -44,22 +44,22 @@ class SpreadSheet {
   }
 
   clearContents() {
-    while (SpreadSheet.editing.sheetId === this.sheetName) {
-      Utilities.sleep(SpreadSheet.waitTimeForExclusive);
+    while (editing.sheetId === this.sheetName) {
+      Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.clearContents();
   }
 
   setValue(value, row, column) {
     while (!this.canEdit(row, column)) {
-      Utilities.sleep(SpreadSheet.waitTimeForExclusive);
+      Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.getRange(row, column).setValue(value);
   }
 
   setValues(valuea, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
     while (!this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
-      Utilities.sleep(SpreadSheet.waitTimeForExclusive);
+      Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
   }
@@ -87,11 +87,11 @@ class SpreadSheet {
   }
 
   getUserIndex(userId) {  
-    return this.searchRow(SpreadSheet.UserIdColumn, userId);
+    return this.searchRow(this.UserIdColumn, userId);
   }
 
   getWeekdayRangeByUser(index) {
-    return [index, SpreadSheet.DeliverySettingFirstColumn, 1, SpreadSheet.SettingLength];
+    return [index, this.DeliverySettingFirstColumn, 1, this.SettingLength];
   }
   setDeliverySettings(userId, settings) {
     this.setDeliverySettingSheet();
@@ -112,13 +112,13 @@ class SpreadSheet {
     this.setDeliverySettingSheet();
     const index = this.getUserIndex(userId);
     if (index === 0) return;
-    this.setValue(flag, index + 1, SpreadSheet.LogicalDeleteFlagColumn);
+    this.setValue(flag, index + 1, this.LogicalDeleteFlagColumn);
   }
 
   setUserName(userId, userName) {
     const row = this.getUserIndex(userId);
     if (row === 0) return;
-    this.setValue(userName, row, SpreadSheet.UserNameColumn);
+    this.setValue(userName, row, this.UserNameColumn);
   }
 
   insertUser(userId, userName) {
@@ -126,28 +126,28 @@ class SpreadSheet {
     const row = this.sheet.getLastRow() + 1;
     const initialSettings = [1, 1, 1, 1, 1, 1, 1, 1, 1];
     const values = [[userId, userName, ...initialSettings]];
-    this.setValues(values, row, SpreadSheet.UserIdColumn, 1, SpreadSheet.DeliverySettingLastColumn - SpreadSheet.UserNameColumn + 1);
+    this.setValues(values, row, this.UserIdColumn, 1, this.DeliverySettingLastColumn - this.UserNameColumn + 1);
   }
 
   getWeekdayColumn() {
     const weekday = getWeekday();
     if (isHoliday()) {
-      return SpreadSheet.DeliverySettingLastColumn;
+      return this.DeliverySettingLastColumn;
     }
-    return weekday + SpreadSheet.DeliverySettingFirstColumn - 1;
+    return weekday + this.DeliverySettingFirstColumn - 1;
   }
 
   getPushTargetUserList() {
     this.setDeliverySettingSheet();
     const weekdayColumn = this.getWeekdayColumn();
-    const lastRow = this.sheet.getLastColumn() - SpreadSheet.FirstDataRow + 1;
-    const lastColumn = weekdayColumn - SpreadSheet.UserIdColumn + 1;
-    const database = this.sheet.getRange(SpreadSheet.FirstDataRow, SpreadSheet.UserIdColumn, lastRow, lastColumn).getValues();
+    const lastRow = this.sheet.getLastColumn() - this.FirstDataRow + 1;
+    const lastColumn = weekdayColumn - this.UserIdColumn + 1;
+    const database = this.sheet.getRange(this.FirstDataRow, this.UserIdColumn, lastRow, lastColumn).getValues();
     // 送信対象のユーザーIDリスト
     const userList = database.flatMap((row) => {
-      const logicalDeleteFlagIndex = SpreadSheet.LogicalDeleteFlagColumn - SpreadSheet.UserIdColumn;
+      const logicalDeleteFlagIndex = this.LogicalDeleteFlagColumn - this.UserIdColumn;
       if (row[logicalDeleteFlagIndex] !== 1) return [];
-      const weekdayIndex = weekdayColumn - SpreadSheet.DeliverySettingFirstColumn;
+      const weekdayIndex = weekdayColumn - this.DeliverySettingFirstColumn;
       if (row[weekdayIndex] !== 1) return [];
       return row[0];
     });
@@ -165,7 +165,7 @@ class SpreadSheet {
     rainfallProbabilityData.reverse().forEach((row, i) => {
       if (i >= rainfallProbabilityPercent.length) return;
       if (row[0] === today) {
-        rainfallProbabilityPercent[rainfallProbabilityPercent.length - i] = row[SpreadSheet.RainfallProbabilityPercentColumn - 1];
+        rainfallProbabilityPercent[rainfallProbabilityPercent.length - i] = row[this.RainfallProbabilityPercentColumn - 1];
       }
     });
     return parcent;

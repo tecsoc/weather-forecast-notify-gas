@@ -1,8 +1,7 @@
 class LineApiClient {
-  static lineBaseEndpoint = 'https://api.line.me/v2/bot';
-
-  secret() {
-    return 'Bearer ' + PropertiesService.getScriptProperties().getProperty('accessToken');
+  constructor() {
+    this.lineBaseEndpoint = 'https://api.line.me/v2/bot';
+    this.secret = `Bearer ${PropertiesService.getScriptProperties().getProperty('accessToken')}`;
   }
 
   getJsonFromResponse(response) {
@@ -10,10 +9,10 @@ class LineApiClient {
   }
 
   getFetch(path) {
-    const requestUrl = LineApiClient.lineBaseEndpoint + path;
+    const requestUrl = this.lineBaseEndpoint + path;
     const response = UrlFetchApp.fetch(requestUrl, {
       'headers': {
-        'Authorization': this.secret()
+        'Authorization': this.secret
       }
     });
     return getJsonFromResponse(response);
@@ -103,10 +102,10 @@ class LineApiClient {
   }
 
   postFetch(path, payload) {
-    const requestUrl = LineApiClient.lineBaseEndpoint + path;
+    const requestUrl = this.lineBaseEndpoint + path;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': this.secret()
+      'Authorization': this.secret
     };
     const options = {
       'method': 'post',
