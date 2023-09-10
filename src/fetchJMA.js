@@ -13,7 +13,7 @@ class fetchJMA {
       return XmlService.parse(xmlStr);
     } catch (e) {
       console.error(e);
-      throw new Error('XMLの取得に失敗しました');
+      throw new Error(`XMLの取得に失敗しました\nエラー内容: \nエラー内容: ${e}`);
     }
   //  return XmlService.parse(UrlFetchApp.fetch(url)).getContentText();
   }
@@ -38,7 +38,7 @@ class fetchJMA {
 
   getRainfallProbability() {
 
-    let targetLink = this.getWeatherXmlLink("府県天気予報");
+    const targetLink = this.getWeatherXmlLink("府県天気予報");
     console.log(targetLink);
 
     let xml = this.getXML(targetLink);

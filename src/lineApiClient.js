@@ -21,7 +21,7 @@ class LineApiClient {
       return this.getJsonFromResponse(response);
     } catch (e) {
       console.error(e);
-      throw new Error('LINEからの取得に失敗しました');
+      throw new Error(`LINEからの取得に失敗しました\nエラー内容: ${e}`);
     }
   }
 
@@ -125,7 +125,7 @@ class LineApiClient {
       return this.getJsonFromResponse(response);
     } catch (e) {
       console.error(e);
-      throw new Error('LINEへの送信に失敗しました');
+      throw new Error(`LINEへの送信に失敗しました\nエラー内容: ${e}`);
     }
   }
 

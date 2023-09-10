@@ -16,7 +16,7 @@ class SpreadSheet {
     this.waitTimeForExclusive = 500;
 
     const sheetId = PropertiesService.getScriptProperties().getProperty('sheetId');
-    if (!sheetId) throw new Error('シートIDが不正です');
+    if (!sheetId) throw new Error(`シートIDが不正です\nエラー内容: ${e}`);
     this.sheet = SpreadsheetApp.openById(sheetId);
   }
 
@@ -30,7 +30,7 @@ class SpreadSheet {
       }
     } catch (e) {
       console.error(e);
-      throw new Error('シートの取得に失敗しました');
+      throw new Error(`シートの取得に失敗しました。\nエラー内容: ${e}`);
     }
   }
 
