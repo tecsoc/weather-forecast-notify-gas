@@ -41,7 +41,7 @@ const doPost = (e) => {
       sheet.setLogicalDeleteFlag(userId, 1);
       message = `再${message}`;
     }
-    payload = pushTextMessage(payload, message);
+    payload = lineClient.pushTextMessage(payload, message);
   } else if (['unfollow', 'leave'].includes(event.type)) {
     if (index !== -1) {
       // 論理削除フラグをオフにする
