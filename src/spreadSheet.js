@@ -34,7 +34,7 @@ class SpreadSheet {
   }
 
   canEdit(targetFirstRow, targetFirstColumn, targetLastRow = 1, targetLastColumn = 1) {
-    if (editing.sheetId !== this.sheetName) return true;
+    if (editing.sheetName !== this.sheetName) return true;
     if (Object.keys(editing.range).length === 0) return true;
     const  { firstRow, firstColumn, lastRow, lastColumn } = editing.range;
     if (firstRow > targetFirstRow && lastRow < targetLastRow && firstColumn > targetFirstColumn && lastColumn < targetLastColumn) {
@@ -44,7 +44,7 @@ class SpreadSheet {
   }
 
   clearContents() {
-    while (editing.sheetId === this.sheetName) {
+    while (editing.sheetName === this.sheetName) {
       Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.clearContents();
