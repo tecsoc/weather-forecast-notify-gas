@@ -17,12 +17,12 @@ class SpreadSheet {
 
     const sheetId = PropertiesService.getScriptProperties().getProperty('sheetId');
     if (!sheetId) throw new Error(`シートIDが不正です\nエラー内容: ${e}`);
-    this.sheet = SpreadsheetApp.openById(sheetId);
+    this.spreadsheet = SpreadsheetApp.openById(sheetId);
   }
 
   setSheet(sheetName) {
     try {
-      this.sheet = this.sheet.getSheetByName(sheetName);
+      this.sheet = this.spreadsheet.getSheetByName(sheetName);
       this.sheetName = sheetName;
       editing = {
         sheetName,
