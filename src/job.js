@@ -32,3 +32,14 @@ const fetchJMAWeatherInfo = () => {
   sheet.setWeatherOverview(weatherOverview);
   sheet.setWeeklyWeatherForecast(weeklyWeatherForecastList);
 };
+
+const sendToDeveopper = () => {
+  const userId = PropertiesService.getScriptProperties().getProperty('userId');
+  const lineClient = new LineApiClient();
+  const payload = {
+    to: userId,
+    messages: []
+  };
+  payload = lineClient.pushTextMessage(payload, 'テスト送信');
+  lineClient.pushMessage(payload);
+}
