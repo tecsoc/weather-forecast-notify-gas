@@ -71,7 +71,7 @@ class fetchJMA {
     return rainfallProbabilityArray;
   }
 
-  getWeatherOverview() {
+  fetchWeatherOverview() {
     let targetLink = this.getWeatherXmlLink('府県天気概況');
     console.log(targetLink);
     let xml = this.getXML(targetLink);
@@ -110,26 +110,4 @@ class fetchJMA {
 
     return weatherForecastList;
   }
-}
-
-function getWeatherOverview(){
-  setSheet('天気概況');
-  return sheet.getRange(1, 1).getValue();
-}
-
-function getWeeklyWeather() {
-  setSheet("週間天気予報");
-  let weeklyWeatherArray = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
-  let messageStr = "";
-  let weekdayArray = "日月火水木金土";
-  for(let i = 0; i < weeklyWeatherArray.length; i++) {
-    let dateObject = new Date(weeklyWeatherArray[i][0]);
-    weeklyWeatherArray[i][0] = weeklyWeatherArray[i][0].replace(/[0-9]{4}\//,"");
-    weeklyWeatherArray[i][0] += `(${weekdayArray[dateObject.getDay()]})`;
-    weeklyWeatherArray[i][2] += "%";
-    messageStr += weeklyWeatherArray[i].join(" ");
-    // 最後以外は改行を挿入
-    if (i !== weeklyWeatherArray.length - 1) messageStr += "\n";
-  }
-  return messageStr;
 }

@@ -17,3 +17,8 @@ const isHoliday = () => {
   const returnValue = todayEvents.length > 0;
   return returnValue;
 }
+
+const getWeekdayStr = (dayObject) => {
+  const weekdayStr = "日月火水木金土";
+  return weekdayStr[dayObject.getDay()];
+}

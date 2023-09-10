@@ -91,10 +91,10 @@ const getEventSourceInfo = (source) => {
   }
 };
 
-const createWeatherMessages = (payload) => {
-  payload = pushTextMessage(payload, getWeatherOverview());
-  payload = pushLichRainfallProbabilityMessage(payload, "今日の東京の天気")
-  payload = pushTextMessage(payload, getWeeklyWeather());
+const createWeatherMessages = (payload, weatherOverview, rainfallProbabilityPercentList, weeklyWeatherForecast) => {
+  payload = pushTextMessage(payload, weatherOverview);
+  payload = pushLichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercentList)
+  payload = pushTextMessage(payload, weeklyWeatherForecast);
   return payload;
 };
 
@@ -113,15 +113,12 @@ const createSendMessagesData  = (to, messages) => {
   };
 };
 
-// userIdsは単数の場合stringでも可
-const pushMessage = (userId, messages) => {
+const pushMessage = (payload) => {
   const path = '/message/push';
-  const payload = createSendMessagesData(userId, messages);
   return linePostFetch_(path, payload);
 };
 
-const pushMulticastMessage = (userIds, messages) => {
+const pushMulticastMessage = (payload) => {
   const path = '/message/multicast';
-  const payload = createSendMessagesData(userIds, messages);
   return linePostFetch_(path, payload);
 }

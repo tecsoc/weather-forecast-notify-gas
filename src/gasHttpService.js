@@ -1,11 +1,12 @@
 const doGet = (e) => {
   const response = {};
   const userId = e.parameter.userId;
+  const sheet = new SpreadSheet();
   if (e.parameter.type === 'updateSetting') {
-    const result = setSetting(userId, e.parameters.settings);
+    const result = sheet.setDeliverySettings(userId, e.parameter.settings);
     response.result = result;
   } else {
-    const settings = getSetting(userId);
+    const settings = sheet.getDeliverySettings(userId);
     if (settings.length) {
       response.settings = settings;
     } else {
@@ -22,10 +23,8 @@ const doPost = (e) => {
   const [id, name] = getEventSourceInfo(event.source);
   const token = event.replyToken;
 
-  setSheet('天気配信管理');
-
-  const index = searchRow(sheet, id);
-
+  const sheet = new SpreadSheet();
+  
   let payload = {
     replyToken: token,
     messages: []
@@ -35,22 +34,22 @@ const doPost = (e) => {
     // 新規ユーザーの場合初期化
     let message = '登録ありがとうございます。デフォルトで毎日天気配信を行います。\n画面下のリッチメニューにある、「天気配信を設定」ボタンから配信曜日を設定できます';;
     if (index === -1) {
-      insertUser(id, userName);
+      sheet.insertUser(id, userName);
     // 既存ユーザーの場合、論理削除フラグをオンにするだけ
     } else {
-      setLogicalDeleteFlag(index, 1);
+      sheet.setLogicalDeleteFlag(userId, 1);
       message = `再${message}`;
     }
     payload = pushTextMessage(payload, message);
   } else if (['unfollow', 'leave'].includes(event.type)) {
     if (index !== -1) {
       // 論理削除フラグをオフにする
-      setLogicalDeleteFlag(index, 0);
+      sheet.setLogicalDeleteFlag(userId, 0);
     }
     return;
   } else if (['memberJoined', 'memberLeft'].includes(event.type) && event.source.type === 'room') {
     // roomの場合参加メンバーの情報がルーム名になるので、ルーム名を更新する
-    sheet.getRange(column, UserNameColumn).setValue(name);
+    sheet.setUserName(id, name);
     return;
   } else if (event.type === 'message') {
     // 送信されてきたテキストを取り出し
@@ -60,7 +59,7 @@ const doPost = (e) => {
 
     switch(text){
       case '@今日の天気':
-        payload = createWeatherMessages(payload);
+        payload = createTemplateMessage(payload, sheet);
         break;
         
       case 'デバッグ':
