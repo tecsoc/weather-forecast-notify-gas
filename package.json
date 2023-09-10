@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "clasp": "clasp",
-    "push": "clasp push",
+    "push": "clasp push -f",
     "deploy": "clasp deploy"
   },
   "dependencies": {

@@ -1,6 +1,9 @@
-class LineApiClient{
+class LineApiClient {
   static lineBaseEndpoint = 'https://api.line.me/v2/bot';
-  static secret = 'Bearer ' + PropertiesService.getScriptProperties().getProperty('accessToken');
+
+  secret() {
+    return 'Bearer ' + PropertiesService.getScriptProperties().getProperty('accessToken');
+  }
 
   getJsonFromResponse(response) {
     return JSON.parse(response.getContentText());
@@ -10,7 +13,7 @@ class LineApiClient{
     const requestUrl = LineApiClient.lineBaseEndpoint + path;
     const response = UrlFetchApp.fetch(requestUrl, {
       'headers': {
-        'Authorization': LineApiClient.secret,
+        'Authorization': this.secret()
       }
     });
     return getJsonFromResponse(response);
@@ -81,7 +84,7 @@ class LineApiClient{
     const weatherOverview = sheet.getWeatherOverview();
     const rainfallProbabilityPercentList = sheet.getRainfallProbabilityPercentList();
     const weeklyWeatherForecast = sheet.getWeeklyWeatherForecast();
-    
+
     console.log(`天気概況:\n\n${weatherOverview}`);
     console.log(`\n\\n降水確率:\n${rainfallProbabilityPercentList}`);
     console.log(`\n週間天気予報:\n${weeklyWeatherForecast}`);
@@ -103,7 +106,7 @@ class LineApiClient{
     const requestUrl = LineApiClient.lineBaseEndpoint + path;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': LineApiClient.secret,
+      'Authorization': this.secret()
     };
     const options = {
       'method': 'post',
