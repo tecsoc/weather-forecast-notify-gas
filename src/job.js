@@ -36,7 +36,7 @@ const fetchJMAWeatherInfo = () => {
 const sendToDeveopper = () => {
   const userId = PropertiesService.getScriptProperties().getProperty('userId');
   const lineClient = new LineApiClient();
-  const payload = {
+  let payload = {
     to: userId,
     messages: []
   };
