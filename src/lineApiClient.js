@@ -97,7 +97,7 @@ class LineApiClient {
 
     payload = this.pushTextMessage(payload, weatherOverview);
     payload = this.pushLichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercentList)
-    payload = this.pushWeatherMessages(payload, weatherOverview, rainfallProbabilityPercentList, weeklyWeatherForecast);
+    payload = this.pushTextMessage(payload, weatherOverview, rainfallProbabilityPercentList, weeklyWeatherForecast);
     return payload;
   }
 
