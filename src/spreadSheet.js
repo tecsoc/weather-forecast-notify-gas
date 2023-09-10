@@ -1,4 +1,4 @@
-const editing = {};
+let editing = {};
 
 class SpreadSheet {
   
@@ -22,8 +22,7 @@ class SpreadSheet {
 
   setSheet(sheetName) {
     try {
-      const spreadsheet = SpreadsheetApp.openById(sheetId);
-      this.sheet = spreadsheet.getSheetByName(sheetName);
+      this.sheet = this.sheet.getSheetByName(sheetName);
       this.sheetName = sheetName;
       editing = {
         sheetName,
@@ -175,7 +174,7 @@ class SpreadSheet {
 
   getWeatherOverview(){
     this.setWeatherOverviewSheet();
-    return sheet.getRange(1, 1).getValue();
+    return this.sheet.getRange(1, 1).getValue();
   }
 
   getWeeklyWeatherForecast() {
