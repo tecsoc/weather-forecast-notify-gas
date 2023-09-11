@@ -78,15 +78,15 @@ class SpreadSheet {
   waitForCanEdit(baseRow, baseColumn, offsetRow = 1, offsetColumn = 1) {
     const startTime = new Date().getTime();
     const timeoutTime = startTime + this.timeOutMilliSec;
-    console.log(`範囲: ${baseRow}, ${baseColumn}, ${offsetRow}, ${offsetColumn}`);
     while(editing.sheetId && !this.canEdit(baseRow, baseColumn, offsetRow, offsetColumn)) {
       const nowTime = new Date().getTime();
       if (nowTime > timeoutTime) {
         throw new Error("編集ロックが解除されませんでした。設定待機許容時間を超えたので終了します。");
       }
-      console.log("編集ロック中です。ロックが解除されるのを待機します");
+      console.log("編集ロック中です。ロックが解除されるのを待機します。");
       Utilities.sleep(this.waitTimeForExclusive);
     }
+    console.log(`範囲: ${baseRow}, ${baseColumn}, ${offsetRow}, ${offsetColumn}を編集ロックしました。`);
   }
 
   setValue(value, row, column) {
