@@ -25,9 +25,5 @@ const getWeekdayStr = (dayObject) => {
 
 const resetSpreadSheetEditLoack = () => {
   const sheet = new SpreadSheet();
-  sheet.releaseEditLock()
+  sheet.releaseEditLock();
 }
-
-const test = () => {
-  console.log("test");
-};

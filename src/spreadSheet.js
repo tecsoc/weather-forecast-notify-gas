@@ -58,27 +58,34 @@ class SpreadSheet {
     while (editing.sheetName === this.sheetName) {
       Utilities.sleep(this.waitTimeForExclusive);
     }
+    const beforeSheetName = editing.sheetName;
+    editing.sheetName = this.sheetName;
     this.sheet.clearContents();
+    editing.sheetName = beforeSheetName;
   }
 
   releaseEditLock() {
     editing.range = {};
     editing.sheetName = "";
+    console.log("編集ロックを解除しました。")
   }
 
-
-  setValue(value, row, column) {
-    while (!this.canEdit(row, column)) {
+  waitForCanEdit(firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
+    console.log(`範囲: ${firstRow}, ${firstColumn}, ${lastRow}, ${lastColumn}`);
+    while(this.sheetName === editing.sheetName && !this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
+      console.log("編集ロック中です。ロックが解除されるのを待機します");
       Utilities.sleep(this.waitTimeForExclusive);
     }
+  }
+
+  setValue(value, row, column) {
+    this.waitForCanEdit(row, column);
     this.sheet.getRange(row, column).setValue(value);
     this.releaseEditLock();
   }
 
   setValues(valuea, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
-    while (!this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
-      Utilities.sleep(this.waitTimeForExclusive);
-    }
+    this.waitForCanEdit(firstRow, firstColumn, lastRow, lastColumn);
     this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
     this.releaseEditLock();
   }

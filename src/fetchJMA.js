@@ -19,11 +19,11 @@ class fetchJMA {
   }
 
   getWeatherXmlLink(deliveryType = "府県天気予報", author = "気象庁") {
-    let xml = this.getXML('https://www.data.jma.go.jp/developer/xml/feed/regular_l.xml');
+    const xml = this.getXML('https://www.data.jma.go.jp/developer/xml/feed/regular_l.xml');
     // 名前空間の取得
-    let atom = XmlService.getNamespace("http://www.w3.org/2005/Atom");
+    const atom = XmlService.getNamespace("http://www.w3.org/2005/Atom");
     // entry要素のlistを取得
-    let entries = xml.getRootElement().getChildren("entry", atom);
+    const entries = xml.getRootElement().getChildren("entry", atom);
     for (let i = 0; i < entries.length; i++) {
       // タイトルが違ったらcontinue
       if (entries[i].getChildText('title', atom).indexOf(deliveryType) !== -1){
@@ -33,22 +33,24 @@ class fetchJMA {
         }
       }
     }
+    return '';
   }
 
 
   getRainfallProbability() {
+    // 降水確率取得もとのURL
+    const rainfallProbabilitySrcUrl = this.getWeatherXmlLink("府県天気予報");
+    console.log(`降水確率取得元URL: ${rainfallProbabilitySrcUrl}`);
+    if (!rainfallProbabilitySrcUrl) throw new Error("降水確率のURLが取得できませんでした");
 
-    const targetLink = this.getWeatherXmlLink("府県天気予報");
-    console.log(targetLink);
+    const xml = this.getXML(rainfallProbabilitySrcUrl);
 
-    let xml = this.getXML(targetLink);
-
-    let timeSeriesInfo = xml.getRootElement().getChild('Body', this.namespace).getChildren('MeteorologicalInfos', this.namespace)[0].getChildren('TimeSeriesInfo', this.namespace).slice(-1)[0];
+    const timeSeriesInfo = xml.getRootElement().getChild('Body', this.namespace).getChildren('MeteorologicalInfos', this.namespace)[0].getChildren('TimeSeriesInfo', this.namespace).slice(-1)[0];
     
-    let timeDefines = timeSeriesInfo.getChild('TimeDefines', this.namespace).getChildren('TimeDefine', this.namespace);
-    let items = timeSeriesInfo.getChildren('Item', this.namespace);
+    const timeDefines = timeSeriesInfo.getChild('TimeDefines', this.namespace).getChildren('TimeDefine', this.namespace);
+    const items = timeSeriesInfo.getChildren('Item', this.namespace);
 
-    let rainfallProbabilityArray = [];
+    const rainfallProbabilityArray = [];
     // 降水確率が入ってる要素の配列
     let elementsInRainfallProbability;
     for(let i = 0; items.length; i++) {
@@ -77,22 +79,21 @@ class fetchJMA {
   }
 
   fetchWeatherOverview() {
-    let targetLink = this.getWeatherXmlLink('府県天気概況');
-    console.log(targetLink);
-    let xml = this.getXML(targetLink);
+    const weatherOverviewSrcUrl = this.getWeatherXmlLink('府県天気概況');
+    console.log(`天気概況取得元URL: ${weatherOverviewSrcUrl}`);
+    if (!weatherOverviewSrcUrl) throw new Error("天気概況のURLが取得できませんでした");
+    const xml = this.getXML(weatherOverviewSrcUrl);
     let weatherOverview = xml.getRootElement().getChild('Body', this.namespace).getChild('Comment', this.namespace).getChildText('Text', this.namespace);
-    weatherOverview = weatherOverview.replace(/ |　|^\n/gm, "");
+    weatherOverview = weatherOverview.trim();
     weatherOverview = weatherOverview.replace(/。伊豆諸島.+。/g, "。");
     weatherOverview = weatherOverview.replace(/\n\【関東甲信地方\】(\S|\s)+/gm, "");
     return weatherOverview;
   }
 
   getWeeklyWeatherForecast() {
-    const targetLink = this.getWeatherXmlLink("府県週間天気予報");
-    if (!targetLink) {
-      console.log("targetLink is null");
-    }
-    const xml = this.getXML(targetLink);
+    const weeklyWeathrtForecatSrcUrl = this.getWeatherXmlLink("府県週間天気予報");
+    if (!weeklyWeathrtForecatSrcUrl) throw new Error("週間天気予報のURLが取得できませんでした");
+    const xml = this.getXML(weeklyWeathrtForecatSrcUrl);
     const timeSeriesInfo = xml.getRootElement().getChild('Body', this.namespace).getChildren('MeteorologicalInfos', this.namespace)[0].getChildren('TimeSeriesInfo', this.namespace).slice(-1)[0];
 
     const timeDefines = timeSeriesInfo.getChild('TimeDefines', this.namespace).getChildren('TimeDefine', this.namespace);

@@ -89,15 +89,15 @@ class LineApiClient {
   createTemplateWeatherForecastMessage(payload, sheet) {
     const weatherOverview = sheet.getWeatherOverview();
     const rainfallProbabilityPercentList = sheet.getRainfallProbabilityPercentList();
-    const weeklyWeatherForecast = sheet.getWeeklyWeatherForecast();
+    const weeklyWeatherForecastList = sheet.getWeeklyWeatherForecast();
 
     console.log(`天気概況:\n\n${weatherOverview}`);
     console.log(`\n\\n降水確率:\n${rainfallProbabilityPercentList}`);
-    console.log(`\n週間天気予報:\n${weeklyWeatherForecast}`);
+    console.log(`\n週間天気予報:\n${weeklyWeatherForecastList}`);
 
     payload = this.pushTextMessage(payload, weatherOverview);
     payload = this.pushLichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercentList)
-    payload = this.pushTextMessage(payload, weeklyWeatherForecast);
+    payload = this.pushLichWeeklyWeatherForecastMessage(payload, "週間天気予報", weeklyWeatherForecastList);
     return payload;
   }
 
@@ -140,6 +140,10 @@ class LineApiClient {
   pushMulticastMessage(payload) {
     return this.postFetch('/message/multicast', payload);
   }
+
+  // 週間天気予報のリッチメッセージを追加する
+  pushLichWeeklyWeatherForecastMessage(payload, title, weeklyWeatherForecast){
+
 
 
   pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityPercentList){
