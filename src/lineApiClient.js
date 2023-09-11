@@ -143,16 +143,114 @@ class LineApiClient {
 
   // 週間天気予報のリッチメッセージを追加する
   pushLichWeeklyWeatherForecastMessage(payload, title, weeklyWeatherForecast){
+    const json = {
+      "type": "bubble",
+      "hero": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": title,
+            "offsetEnd": "sm",
+            "weight": "bold"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [],
+            "spacing": "sm"
+          }
+        ],
+        "justifyContent": "center",
+        "alignItems": "center",
+        "spacing": "md",
+        "paddingTop": "md",
+        "paddingBottom": "md",
+        "paddingStart": "sm",
+        "paddingEnd": "sm"
+      },
+      "styles": {
+        "body": {
+          "separator": false
+        }
+      }
+    }
+    
+    for(const row of weeklyWeatherForecast) {
+      json.hero.contents[1].contents.push({
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "flex": 0
+      },
+      {
+        "type": "text",
+        "text": row[0],
+        "align": "center",
+        "gravity": "center",
+        "flex": 15
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "backgroundColor": "#55534760",
+        "flex": 1
+      },
+      {
+        "type": "text",
+        "text": row[1],
+        "flex": 25,
+        "wrap": false,
+        "align": "center"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "backgroundColor": "#55534760",
+        "flex": 1
+      },
+      {
+        "type": "text",
+        "text": row[2],
+        "flex": 8,
+        "align": "center",
+        "wrap": false
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "backgroundColor": "#55534760",
+        "flex": 1
+      },
+      {
+        "type": "text",
+        "text": row[3],
+        "flex": 4,
+        "align": "center",
+        "wrap": false
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "flex": 0
+      });
+    }
 
+    payload.messages.push(json);
+    return payload;
+  }
 
-
-  pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityPercentList){
+  pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityPercentList) {
     const time = ["00時","06時","12時","18時","24時"];
     const color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
     const altText = [title, ...rainfallProbabilityPercentList].join("\n");
   
-    const json =
-    {
+    const json = {
       "type": "flex",
       "altText": altText,
       "contents": {
@@ -184,7 +282,7 @@ class LineApiClient {
       }
     };
     
-    for (var i = 1; i <= 5; i++) {
+    for (const i = 1; i <= 5; i++) {
       json['contents']['body']['contents'].push(
         {
           "type": "box",
