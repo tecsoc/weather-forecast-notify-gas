@@ -178,18 +178,17 @@ class SpreadSheet {
 
   getPushTargetUserList() {
     this.setDeliverySettingSheet();
-    const weekdayIndex = this.getWeekdayColumn();
-    const weekdayColumn = weekdayIndex  + this.DeliverySettingFirstColumn - this.UserIdColumn + 1;
-    const lastRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
-    const lastColumn = weekdayIndex - this.UserIdColumn + 1;
-    const database = this.sheet.getRange(this.FirstDataRow, this.DeliverySettingFirstColumn, lastRow, lastColumn).getValues();
+    const offsetColimn = this.getWeekdayColumn();
+    const weekdayIndex = offsetColimn - 1;
+    const offsetRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
+    const database = this.sheet.getRange(this.FirstDataRow, 1, offsetRow, offsetColimn).getValues();
     // 送信対象のユーザーIDリスト
     const userList = database.flatMap((row) => {
-      const logicalDeleteFlagIndex = this.LogicalDeleteFlagColumn - this.UserIdColumn;
-      console.log(`データ:${row[logicalDeleteFlagIndex]}, データ型${typeof row[logicalDeleteFlagIndex]}`);
-      if (row[logicalDeleteFlagIndex] !== 1) return [];
-      if (row[weekdayColumn] !== 1) return [];
-      return row[0];
+      console.log(`データ:${row[this.LogicalDeleteFlagColumn]}, データ型${typeof row[this.LogicalDeleteFlagColumn]}`);
+      if (row[this.LogicalDeleteFlagColumn] === 1) {
+        if (row[weekdayIndex] === 1) return row[this.UserIdColumn - 1];
+      }
+      return [];
     });
     return userList;
   }
