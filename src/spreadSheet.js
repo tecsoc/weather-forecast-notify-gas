@@ -35,13 +35,23 @@ class SpreadSheet {
   }
 
   canEdit(targetFirstRow, targetFirstColumn, targetLastRow = 1, targetLastColumn = 1) {
-    if (editing.sheetName !== this.sheetName) return true;
-    if (Object.keys(editing.range).length === 0) return true;
-    const  { firstRow, firstColumn, lastRow, lastColumn } = editing.range;
-    if (firstRow > targetFirstRow && lastRow < targetLastRow && firstColumn > targetFirstColumn && lastColumn < targetLastColumn) {
-      return  true;
+    if (editing.sheetName === this.sheetName) return false;
+    else if (Object.keys(editing.range).length !== 0) {
+      const  { firstRow, firstColumn, lastRow, lastColumn } = editing.range;
+      if (firstRow <= targetFirstRow && lastRow >= targetFirstRow && firstColumn <= targetFirstColumn && lastColumn >= targetFirstColumn) {
+        return false;
+      }
+    } else {
+      return false;
     }
-    return false
+    editing.sheetName = this.sheetName;
+    editing.range = {
+      firstRow: targetFirstRow,
+      firstColumn: targetFirstColumn,
+      lastRow: targetLastRow,
+      lastColumn: targetLastColumn
+    };
+    return true;
   }
 
   clearContents() {
@@ -51,11 +61,18 @@ class SpreadSheet {
     this.sheet.clearContents();
   }
 
+  releaseEdit() {
+    editing.range = {};
+    editing.sheetName = "";
+  }
+
+
   setValue(value, row, column) {
     while (!this.canEdit(row, column)) {
       Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.getRange(row, column).setValue(value);
+    this.releaseEdit();
   }
 
   setValues(valuea, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
@@ -63,6 +80,7 @@ class SpreadSheet {
       Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
+    this.releaseEdit();
   }
 
   setDeliverySettingSheet() {
