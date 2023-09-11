@@ -14,6 +14,7 @@ class SpreadSheet {
     this.RainfallProbabilityPercentColumn = 3;
     // 排他待機時間
     this.waitTimeForExclusive = 500;
+    this.timeOutMilliSec = 10000;
 
     const sheetId = PropertiesService.getScriptProperties().getProperty('sheetId');
     if (!sheetId) throw new Error(`シートIDが不正です\nエラー内容: ${e}`);
@@ -23,9 +24,8 @@ class SpreadSheet {
   setSheet(sheetName) {
     try {
       this.sheet = this.spreadsheet.getSheetByName(sheetName);
-      this.sheetName = sheetName;
       editing = {
-        sheetName,
+        sheetName: "",
         range: {}
       }
     } catch (e) {
@@ -71,8 +71,14 @@ class SpreadSheet {
   }
 
   waitForCanEdit(firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
+    const startTime = new Date().getTime();
+    const timeoutTime = startTime + timeOutMilliSec;
     console.log(`範囲: ${firstRow}, ${firstColumn}, ${lastRow}, ${lastColumn}`);
     while(this.sheetName === editing.sheetName && !this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
+      const nowTime = new Date().getTime();
+      if (nowTime > timeoutTime) {
+        throw new Error("編集ロックが解除されませんでした。設定待機許容時間を超えたので終了します。");
+      }
       console.log("編集ロック中です。ロックが解除されるのを待機します");
       Utilities.sleep(this.waitTimeForExclusive);
     }
