@@ -36,11 +36,12 @@ const fetchJMAWeatherInfo = () => {
 
 const sendToDeveopper = () => {
   const userId = PropertiesService.getScriptProperties().getProperty('userId');
+  const sheet = new SpreadSheet();
   const lineClient = new LineApiClient();
   let payload = {
     to: userId,
     messages: []
   };
-  payload = lineClient.pushTextMessage(payload, 'テスト送信');
+  payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
   lineClient.pushMessage(payload);
 }
