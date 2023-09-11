@@ -181,7 +181,7 @@ class SpreadSheet {
     this.setWeeklyWeatherForecastSheet();
     const weeklyWeatherForecastList = this.sheet.getRange(1, 1, this.sheet.getLastRow(), this.sheet.getLastColumn()).getDisplayValues();
     const weekdayArray = "日月火水木金土";
-    const messages = weeklyWeatherForecastList.map((row) => {
+    weeklyWeatherForecastList.forEach((row) => {
       const dateObject = new Date(row[0]);
       const weekdayStr = weekdayArray[dateObject.getDay()];
       row[0] = row[0].replace(/[0-9]{4}\//,"");
@@ -189,7 +189,7 @@ class SpreadSheet {
       row[2] += "%";
       return row.join(" ");
     });
-    return messages.join("\n");
+    return weeklyWeatherForecastList;
   }
 
   setRainfallProbability (rainfallProbabilityList) {
