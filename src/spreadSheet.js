@@ -61,7 +61,7 @@ class SpreadSheet {
     this.sheet.clearContents();
   }
 
-  releaseEdit() {
+  releaseEditLock() {
     editing.range = {};
     editing.sheetName = "";
   }
@@ -72,7 +72,7 @@ class SpreadSheet {
       Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.getRange(row, column).setValue(value);
-    this.releaseEdit();
+    this.releaseEditLock();
   }
 
   setValues(valuea, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
@@ -80,7 +80,7 @@ class SpreadSheet {
       Utilities.sleep(this.waitTimeForExclusive);
     }
     this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
-    this.releaseEdit();
+    this.releaseEditLock();
   }
 
   setDeliverySettingSheet() {
@@ -158,16 +158,17 @@ class SpreadSheet {
 
   getPushTargetUserList() {
     this.setDeliverySettingSheet();
-    const weekdayColumn = this.getWeekdayColumn();
-    const lastRow = this.sheet.getLastColumn() - this.FirstDataRow + 1;
-    const lastColumn = weekdayColumn - this.UserIdColumn + 1;
+    const weekdayIndex = this.getWeekdayColumn();
+    const weekdayColumn = weekdayIndex  + this.DeliverySettingFirstColumn - this.UserIdColumn + 1;
+    const lastRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
+    const lastColumn = weekdayIndex - this.UserIdColumn + 1;
     const database = this.sheet.getRange(this.FirstDataRow, this.UserIdColumn, lastRow, lastColumn).getValues();
     // 送信対象のユーザーIDリスト
     const userList = database.flatMap((row) => {
       const logicalDeleteFlagIndex = this.LogicalDeleteFlagColumn - this.UserIdColumn;
+      console.log(`データ:${row[logicalDeleteFlagIndex]}, データ型${typeof row[logicalDeleteFlagIndex]}`);
       if (row[logicalDeleteFlagIndex] !== 1) return [];
-      const weekdayIndex = weekdayColumn - this.DeliverySettingFirstColumn;
-      if (row[weekdayIndex] !== 1) return [];
+      if (row[weekdayColumn] !== 1) return [];
       return row[0];
     });
     return userList;

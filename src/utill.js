@@ -22,3 +22,12 @@ const getWeekdayStr = (dayObject) => {
   const weekdayStr = "日月火水木金土";
   return weekdayStr[dayObject.getDay()];
 }
+
+const resetSpreadSheetEditLoack = () => {
+  const sheet = new SpreadSheet();
+  sheet.releaseEditLock()
+}
+
+const test = () => {
+  console.log("test");
+};
