@@ -72,7 +72,7 @@ class SpreadSheet {
 
   waitForCanEdit(firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
     const startTime = new Date().getTime();
-    const timeoutTime = startTime + timeOutMilliSec;
+    const timeoutTime = startTime + this.timeOutMilliSec;
     console.log(`範囲: ${firstRow}, ${firstColumn}, ${lastRow}, ${lastColumn}`);
     while(this.sheetName === editing.sheetName && !this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
       const nowTime = new Date().getTime();
