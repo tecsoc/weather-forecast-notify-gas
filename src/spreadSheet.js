@@ -24,10 +24,6 @@ class SpreadSheet {
   setSheet(sheetName) {
     try {
       this.sheet = this.spreadsheet.getSheetByName(sheetName);
-      editing = {
-        sheetName: "",
-        range: {}
-      }
     } catch (e) {
       console.error(e);
       throw new Error(`シートの取得に失敗しました。\nエラー内容: ${e}`);
@@ -35,38 +31,47 @@ class SpreadSheet {
   }
 
   canEdit(targetFirstRow, targetFirstColumn, targetLastRow = 1, targetLastColumn = 1) {
-    if (editing.sheetName === this.sheetName) return false;
+    if (editing.sheetId) return false;
     else if (Object.keys(editing.range).length !== 0) {
       const  { firstRow, firstColumn, lastRow, lastColumn } = editing.range;
-      if (firstRow <= targetFirstRow && lastRow >= targetFirstRow && firstColumn <= targetFirstColumn && lastColumn >= targetFirstColumn) {
+      if (firstRow === null || firstColumn === null || lastRow === null || lastColumn === null);
+      else if (firstRow <= targetFirstRow && lastRow >= targetFirstRow && firstColumn <= targetFirstColumn && lastColumn >= targetFirstColumn) {
         return false;
       }
     } else {
       return false;
     }
-    editing.sheetName = this.sheetName;
-    editing.range = {
-      firstRow: targetFirstRow,
-      firstColumn: targetFirstColumn,
-      lastRow: targetLastRow,
-      lastColumn: targetLastColumn
+    const sheetId = this.sheet.getSheetId();
+    editing = {
+      sheetId,
+      range: {
+        firstRow: targetFirstRow,
+        firstColumn: targetFirstColumn,
+        lastRow: targetLastRow,
+        lastColumn: targetLastColumn
+      }
     };
     return true;
   }
 
   clearContents() {
-    while (editing.sheetName === this.sheetName) {
+    while (editing.sheetId === this.sheet.getSheetId()) {
       Utilities.sleep(this.waitTimeForExclusive);
     }
-    const beforeSheetName = editing.sheetName;
-    editing.sheetName = this.sheetName;
     this.sheet.clearContents();
-    editing.sheetName = beforeSheetName;
+    this.releaseEditLock();
   }
 
   releaseEditLock() {
-    editing.range = {};
-    editing.sheetName = "";
+    editing = {
+      sheetId: '',
+      range: {
+        firstRow: null,
+        firstColumn: null,
+        lastRow: null,
+        lastColumn: null
+      }
+    }
     console.log("編集ロックを解除しました。")
   }
 
@@ -74,7 +79,7 @@ class SpreadSheet {
     const startTime = new Date().getTime();
     const timeoutTime = startTime + this.timeOutMilliSec;
     console.log(`範囲: ${firstRow}, ${firstColumn}, ${lastRow}, ${lastColumn}`);
-    while(this.sheetName === editing.sheetName && !this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
+    while(editing.sheetId && !this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
       const nowTime = new Date().getTime();
       if (nowTime > timeoutTime) {
         throw new Error("編集ロックが解除されませんでした。設定待機許容時間を超えたので終了します。");
@@ -93,7 +98,6 @@ class SpreadSheet {
   setValues(values, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
     this.waitForCanEdit(firstRow, firstColumn, lastRow, lastColumn);
     this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
-    this.releaseEditLock();
   }
 
   setDeliverySettingSheet() {
@@ -145,12 +149,14 @@ class SpreadSheet {
     const index = this.getUserIndex(userId);
     if (index === 0) return;
     this.setValue(flag, index + 1, this.LogicalDeleteFlagColumn);
+    this.releaseEditLock();
   }
 
   setUserName(userId, userName) {
     const row = this.getUserIndex(userId);
     if (row === 0) return;
     this.setValue(userName, row, this.UserNameColumn);
+    this.releaseEditLock();
   }
 
   insertUser(userId, userName) {
@@ -159,6 +165,7 @@ class SpreadSheet {
     const initialSettings = [1, 1, 1, 1, 1, 1, 1, 1, 1];
     const values = [[userId, userName, ...initialSettings]];
     this.setValues(values, row, this.UserIdColumn, 1, this.DeliverySettingLastColumn - this.UserNameColumn + 1);
+    this.releaseEditLock();
   }
 
   getWeekdayColumn() {
@@ -228,16 +235,19 @@ class SpreadSheet {
     this.setDeliverySettingSheet();
     this.clearContents();
     this.setValues(rainfallProbabilityList, 1, 1, rainfallProbabilityList.length, rainfallProbabilityList[0].length);
+    this.releaseEditLock();
   }
 
   setWeatherOverview(value) {
     this.setWeatherOverviewSheet();
     this.setValue(value, 1, 1);
+    this.releaseEditLock();
   }
 
   setWeeklyWeatherForecast(weeklyWeatherForecastList) {
     this.setWeeklyWeatherForecastSheet();
     this.clearContents();
     this.setValues(weeklyWeatherForecastList, 1, 1, weeklyWeatherForecastList.length, weeklyWeatherForecastList[0].length)
+    this.releaseEditLock();
   }
 }
