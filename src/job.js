@@ -14,7 +14,7 @@ const pushWeatherForecastForTargetUser = () => {
     messages: []
   };
   payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
-  pushMulticastMessage(payload);
+  lineClient.pushMulticastMessage(payload);
 };
 
 const fetchJMAWeatherInfo = () => {
