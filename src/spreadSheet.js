@@ -90,7 +90,7 @@ class SpreadSheet {
     this.releaseEditLock();
   }
 
-  setValues(valuea, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
+  setValues(values, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
     this.waitForCanEdit(firstRow, firstColumn, lastRow, lastColumn);
     this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
     this.releaseEditLock();
@@ -166,7 +166,7 @@ class SpreadSheet {
     if (isHoliday()) {
       return this.DeliverySettingLastColumn;
     }
-    return weekday + this.DeliverySettingFirstColumn - 1;
+    return weekday + this.DeliverySettingFirstColumn;
   }
 
   getPushTargetUserList() {
@@ -175,7 +175,7 @@ class SpreadSheet {
     const weekdayColumn = weekdayIndex  + this.DeliverySettingFirstColumn - this.UserIdColumn + 1;
     const lastRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
     const lastColumn = weekdayIndex - this.UserIdColumn + 1;
-    const database = this.sheet.getRange(this.FirstDataRow, this.UserIdColumn, lastRow, lastColumn).getValues();
+    const database = this.sheet.getRange(this.FirstDataRow, this.DeliverySettingFirstColumn, lastRow, lastColumn).getValues();
     // 送信対象のユーザーIDリスト
     const userList = database.flatMap((row) => {
       const logicalDeleteFlagIndex = this.LogicalDeleteFlagColumn - this.UserIdColumn;
