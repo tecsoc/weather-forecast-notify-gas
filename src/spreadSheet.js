@@ -86,7 +86,7 @@ class SpreadSheet {
       console.log("編集ロック中です。ロックが解除されるのを待機します。");
       Utilities.sleep(this.waitTimeForExclusive);
     }
-    console.log(`範囲: ${baseRow}, ${baseColumn}, ${offsetRow}, ${offsetColumn}を編集ロックしました。`);
+    console.log(`範囲: {${baseRow}, ${baseColumn}, ${offsetRow}, ${offsetColumn}} を編集ロックしました。`);
   }
 
   setValue(value, row, column) {
@@ -173,24 +173,27 @@ class SpreadSheet {
     if (isHoliday()) {
       return this.DeliverySettingLastColumn;
     }
-    return weekday + this.DeliverySettingFirstColumn;
+    return weekday + this.DeliverySettingFirstColumn - 1;
   }
 
   getPushTargetUserList() {
     this.setDeliverySettingSheet();
     const offsetColumn = this.getWeekdayColumn();
-    const weekdayIndex = offsetColumn - 1;
     const offsetRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
     const database = this.sheet.getRange(this.FirstDataRow, 1, offsetRow, offsetColumn).getValues();
-    // 送信対象のユーザーIDリスト
-    const userList = database.flatMap((row) => {
-      console.log(`データ:${row[this.LogicalDeleteFlagColumn]}, データ型${typeof row[this.LogicalDeleteFlagColumn]}`);
-      if (row[this.LogicalDeleteFlagColumn] === 1) {
-        if (row[weekdayIndex] === 1) return row[this.UserIdColumn - 1];
+    const logicalDeleteIndex = this.LogicalDeleteFlagColumn - 1;
+    const weekdayIndex = offsetColumn - 1;
+    const userIdIndex = this.UserIdColumn - 1;
+    const pushTargetuserList = database.flatMap((row) => {
+      console.log(`データ:${row[logicalDeleteIndex]}, データ型${typeof row[logicalDeleteIndex]}`);
+      if (row[logicalDeleteIndex] === 1) {
+        if (row[weekdayIndex] === 1) {
+          return row[userIdIndex];
+        } 
       }
       return [];
     });
-    return userList;
+    return pushTargetuserList;
   }
 
   getRainfallProbabilityPercentList(){
@@ -231,7 +234,7 @@ class SpreadSheet {
   }
 
   setRainfallProbability (rainfallProbabilityList) {
-    this.setDeliverySettingSheet();
+    this.setRainfallProbabilitySheet();
     this.clearContents();
     this.setValues(rainfallProbabilityList, 1, 1, rainfallProbabilityList.length, rainfallProbabilityList[0].length);
     this.releaseEditLock();

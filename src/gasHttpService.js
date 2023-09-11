@@ -73,6 +73,7 @@ const doPost = (e) => {
         break;
     }
   }
-
-  lineClient.reply(payload);
+  if (replyToken) {
+    lineClient.reply(payload);
+  }
 }

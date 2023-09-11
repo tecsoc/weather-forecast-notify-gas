@@ -92,7 +92,7 @@ class LineApiClient {
     const weeklyWeatherForecastList = sheet.getWeeklyWeatherForecast();
 
     console.log(`天気概況:\n\n${weatherOverview}`);
-    console.log(`\n\\n降水確率:\n${rainfallProbabilityPercentList}`);
+    console.log(`\n\n降水確率:\n${rainfallProbabilityPercentList}`);
     console.log(`\n週間天気予報:\n${weeklyWeatherForecastList}`);
 
     payload = this.pushTextMessage(payload, weatherOverview);
@@ -282,7 +282,7 @@ class LineApiClient {
       }
     };
     
-    for (const i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       json['contents']['body']['contents'].push(
         {
           "type": "box",
