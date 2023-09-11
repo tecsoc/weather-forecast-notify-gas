@@ -8,7 +8,7 @@ const pushWeatherForecastForTargetUser = () => {
   const lineClient = new LineApiClient();
   const pushUserIdList = sheet.getPushTargetUserList();
   console.log(`送信対象ユーザーIDリスト: ${pushUserIdList}`);
-  if (pushUserIdList.length <= 1) return;  
+  if (pushUserIdList.length < 1) return;  
   const payload = {
     to: pushUserIdList,
     messages: []
