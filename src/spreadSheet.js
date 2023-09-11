@@ -30,12 +30,12 @@ class SpreadSheet {
     }
   }
 
-  canEdit(targetFirstRow, targetFirstColumn, targetLastRow = 1, targetLastColumn = 1) {
+  canEdit(currentBaseRow, currentBaseColumn, currentOffsetRow = 1, currentOffsetColumn = 1) {
     if (editing.sheetId) return false;
     else if (Object.keys(editing.range).length !== 0) {
-      const  { firstRow, firstColumn, lastRow, lastColumn } = editing.range;
-      if (firstRow === null || firstColumn === null || lastRow === null || lastColumn === null);
-      else if (firstRow <= targetFirstRow && lastRow >= targetFirstRow && firstColumn <= targetFirstColumn && lastColumn >= targetFirstColumn) {
+      const  { baseRow, baseColumn, offsetRow, offsetColumn } = editing.range;
+      if (baseRow === null || baseColumn === null || offsetRow === null || offsetColumn === null);
+      else if (baseRow <= currentBaseRow && offsetRow >= baseColumn && baseColumn <= currentBaseColumn && offsetColumn >= currentOffsetColumn) {
         return false;
       }
     } else {
@@ -45,10 +45,10 @@ class SpreadSheet {
     editing = {
       sheetId,
       range: {
-        firstRow: targetFirstRow,
-        firstColumn: targetFirstColumn,
-        lastRow: targetLastRow,
-        lastColumn: targetLastColumn
+        baseRow: currentBaseRow,
+        baseColumn: currentBaseColumn,
+        offsetRow: currentOffsetRow,
+        offsetColumn: currentOffsetColumn
       }
     };
     return true;
@@ -66,20 +66,20 @@ class SpreadSheet {
     editing = {
       sheetId: '',
       range: {
-        firstRow: null,
-        firstColumn: null,
-        lastRow: null,
-        lastColumn: null
+        baseRow: null,
+        baseColumn: null,
+        offsetRow: null,
+        offsetColumn: null
       }
     }
     console.log("編集ロックを解除しました。")
   }
 
-  waitForCanEdit(firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
+  waitForCanEdit(baseRow, baseColumn, offsetRow = 1, offsetColumn = 1) {
     const startTime = new Date().getTime();
     const timeoutTime = startTime + this.timeOutMilliSec;
-    console.log(`範囲: ${firstRow}, ${firstColumn}, ${lastRow}, ${lastColumn}`);
-    while(editing.sheetId && !this.canEdit(firstRow, firstColumn, lastRow, lastColumn)) {
+    console.log(`範囲: ${baseRow}, ${baseColumn}, ${offsetRow}, ${offsetColumn}`);
+    while(editing.sheetId && !this.canEdit(baseRow, baseColumn, offsetRow, offsetColumn)) {
       const nowTime = new Date().getTime();
       if (nowTime > timeoutTime) {
         throw new Error("編集ロックが解除されませんでした。設定待機許容時間を超えたので終了します。");
@@ -95,9 +95,9 @@ class SpreadSheet {
     this.releaseEditLock();
   }
 
-  setValues(values, firstRow, firstColumn, lastRow = 1, lastColumn = 1) {
-    this.waitForCanEdit(firstRow, firstColumn, lastRow, lastColumn);
-    this.sheet.getRange(firstRow, firstColumn, lastRow, lastColumn).setValues(values);
+  setValues(values, baseRow, baseColumn, offsetRow = 1, offsetColumn = 1) {
+    this.waitForCanEdit(baseRow, baseColumn, offsetRow, offsetColumn);
+    this.sheet.getRange(baseRow, baseColumn, offsetRow, offsetColumn).setValues(values);
   }
 
   setDeliverySettingSheet() {
@@ -178,10 +178,10 @@ class SpreadSheet {
 
   getPushTargetUserList() {
     this.setDeliverySettingSheet();
-    const offsetColimn = this.getWeekdayColumn();
-    const weekdayIndex = offsetColimn - 1;
+    const offsetColumn = this.getWeekdayColumn();
+    const weekdayIndex = offsetColumn - 1;
     const offsetRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
-    const database = this.sheet.getRange(this.FirstDataRow, 1, offsetRow, offsetColimn).getValues();
+    const database = this.sheet.getRange(this.FirstDataRow, 1, offsetRow, offsetColumn).getValues();
     // 送信対象のユーザーIDリスト
     const userList = database.flatMap((row) => {
       console.log(`データ:${row[this.LogicalDeleteFlagColumn]}, データ型${typeof row[this.LogicalDeleteFlagColumn]}`);
