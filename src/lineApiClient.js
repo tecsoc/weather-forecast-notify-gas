@@ -143,103 +143,106 @@ class LineApiClient {
 
   // 週間天気予報のリッチメッセージを追加する
   pushLichWeeklyWeatherForecastMessage(payload, title, weeklyWeatherForecast){
-    const json = {
-      "type": "bubble",
-      "hero": {
+    const altText = weeklyWeatherForecast.map((row) => row.join(" ")).join("\n");
+
+    const messqgeContents = weeklyWeatherForecast.map((row) => {
+      return {
         "type": "box",
-        "layout": "vertical",
+        "layout": "horizontal",
         "contents": [
           {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "flex": 0
+          },
+          {
             "type": "text",
-            "text": title,
-            "offsetEnd": "sm",
-            "weight": "bold"
+            "text": row[0],
+            "align": "center",
+            "gravity": "center",
+            "flex": 15
           },
           {
             "type": "box",
-            "layout": "horizontal",
+            "layout": "vertical",
             "contents": [],
-            "spacing": "sm"
+            "backgroundColor": "#55534760",
+            "flex": 1
+          },
+          {
+            "type": "text",
+            "text": row[1],
+            "flex": 25,
+            "wrap": false,
+            "align": "center"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#55534760",
+            "flex": 1
+          },
+          {
+            "type": "text",
+            "text": row[2],
+            "flex": 8,
+            "align": "center",
+            "wrap": false
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#55534760",
+            "flex": 1
+          },
+          {
+            "type": "text",
+            "text": row[3],
+            "flex": 4,
+            "align": "center",
+            "wrap": false
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "flex": 0
           }
         ],
-        "justifyContent": "center",
-        "alignItems": "center",
-        "spacing": "md",
-        "paddingTop": "md",
-        "paddingBottom": "md",
-        "paddingStart": "sm",
-        "paddingEnd": "sm"
-      },
-      "styles": {
+        "spacing": "sm"
+      }
+    });
+
+    const json = {
+      "type": "flex",
+      "altText": altText,
+      "contents": {
+        "type": "bubble",
         "body": {
-          "separator": false
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": title,
+              "offsetEnd": "sm",
+              "weight": "bold"
+            },
+            ...messqgeContents,
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "spacing": "md",
+          "paddingTop": "md",
+          "paddingBottom": "md",
+          "paddingStart": "sm",
+          "paddingEnd": "sm"
         }
       }
-    }
-    
-    for(const row of weeklyWeatherForecast) {
-      json.hero.contents[1].contents.push({
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "flex": 0
-      },
-      {
-        "type": "text",
-        "text": row[0],
-        "align": "center",
-        "gravity": "center",
-        "flex": 15
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "backgroundColor": "#55534760",
-        "flex": 1
-      },
-      {
-        "type": "text",
-        "text": row[1],
-        "flex": 25,
-        "wrap": false,
-        "align": "center"
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "backgroundColor": "#55534760",
-        "flex": 1
-      },
-      {
-        "type": "text",
-        "text": row[2],
-        "flex": 8,
-        "align": "center",
-        "wrap": false
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "backgroundColor": "#55534760",
-        "flex": 1
-      },
-      {
-        "type": "text",
-        "text": row[3],
-        "flex": 4,
-        "align": "center",
-        "wrap": false
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "flex": 0
-      });
-    }
+    };
 
     payload.messages.push(json);
     return payload;

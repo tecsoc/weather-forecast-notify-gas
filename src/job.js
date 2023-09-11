@@ -44,5 +44,6 @@ const sendToDeveopper = () => {
     messages: []
   };
   payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
-  lineClient.pushMessage(payload);
+  const response = lineClient.pushMessage(payload);
+  console.log('送信レスポンス：\n%o', response);
 }
