@@ -9,7 +9,7 @@ const pushWeatherForecastForTargetUser = () => {
   const pushUserIdList = sheet.getPushTargetUserList();
   console.log(`送信対象ユーザーIDリスト: ${pushUserIdList}`);
   if (pushUserIdList.length < 1) return;  
-  const payload = {
+  let payload = {
     to: pushUserIdList,
     messages: []
   };
