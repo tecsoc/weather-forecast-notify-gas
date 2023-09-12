@@ -26,7 +26,7 @@ const doPost = (e) => {
 
   const sheet = new SpreadSheet();
   
-  const userIndex = sheet.getUserIndex(userId);
+  const userIndex = sheet.getUserIndex(id);
 
   let payload = {
     replyToken: token,
@@ -34,21 +34,20 @@ const doPost = (e) => {
   };
 
   if (['follow', 'join'].includes(event.type)) {
-    const userName = lineClient.getUserName(userId);
     // 新規ユーザーの場合初期化
     let message = '登録ありがとうございます。デフォルトで毎日天気配信を行います。\n画面下のリッチメニューにある、「天気配信を設定」ボタンから配信曜日を設定できます。';;
     if (userIndex === 0) {
-      sheet.insertUser(id, userName);
+      sheet.insertUser(id, name);
     // 既存ユーザーの場合、論理削除フラグをオンにするだけ
     } else {
-      sheet.setLogicalDeleteFlag(userId, 1);
+      sheet.setLogicalDeleteFlag(id, 1);
       message = `再${message}`;
     }
     payload = lineClient.pushTextMessage(payload, message);
   } else if (['unfollow', 'leave'].includes(event.type)) {
     if (userIndex !== 0) {
       // 論理削除フラグをオフにする
-      sheet.setLogicalDeleteFlag(userId, 0);
+      sheet.setLogicalDeleteFlag(id, 0);
     }
     return;
   } else if (['memberJoined', 'memberLeft'].includes(event.type) && event.source.type === 'room') {
