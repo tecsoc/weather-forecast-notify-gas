@@ -26,15 +26,18 @@ const doPost = (e) => {
 
   const sheet = new SpreadSheet();
   
+  const userIndex = sheet.getUserIndex(userId);
+
   let payload = {
     replyToken: token,
     messages: []
   };
+
   if (['follow', 'join'].includes(event.type)) {
-    const userName = getUserName(id);
+    const userName = lineClient.getUserName(userId);
     // 新規ユーザーの場合初期化
-    let message = '登録ありがとうございます。デフォルトで毎日天気配信を行います。\n画面下のリッチメニューにある、「天気配信を設定」ボタンから配信曜日を設定できます';;
-    if (index === -1) {
+    let message = '登録ありがとうございます。デフォルトで毎日天気配信を行います。\n画面下のリッチメニューにある、「天気配信を設定」ボタンから配信曜日を設定できます。';;
+    if (userIndex === 0) {
       sheet.insertUser(id, userName);
     // 既存ユーザーの場合、論理削除フラグをオンにするだけ
     } else {
@@ -43,7 +46,7 @@ const doPost = (e) => {
     }
     payload = lineClient.pushTextMessage(payload, message);
   } else if (['unfollow', 'leave'].includes(event.type)) {
-    if (index !== -1) {
+    if (userIndex !== 0) {
       // 論理削除フラグをオフにする
       sheet.setLogicalDeleteFlag(userId, 0);
     }
@@ -73,7 +76,5 @@ const doPost = (e) => {
         break;
     }
   }
-  if (replyToken) {
-    lineClient.reply(payload);
-  }
+  lineClient.reply(payload);
 }
