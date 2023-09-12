@@ -15,7 +15,7 @@ const pushWeatherForecastForTargetUser = () => {
   };
   payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
   const response = lineClient.pushMulticastMessage(payload);
-  console.log('送信レスポンス：\n%o', response);
+  console.log('送信レスポンス：\n', response);
 };
 
 const fetchJMAWeatherInfo = () => {
@@ -45,5 +45,5 @@ const sendToDeveopper = () => {
   };
   payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
   const response = lineClient.pushMessage(payload);
-  console.log('送信レスポンス：\n%o', response);
+  console.log('送信レスポンス：\n', response);
 }

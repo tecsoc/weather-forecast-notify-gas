@@ -151,67 +151,71 @@ class LineApiClient {
       "contents": [],
       "flex": 0
     };
-    const flexFactorList = [45, 75, 24, 12]
-    const messageContents = weeklyWeatherForecast.reduce((prev, row, i) => {
-      const mainContents = row.map((item) => {
-        const obj = {
+    const flexFactorList = [45, 70, 24, 12]
+    const messageContents = weeklyWeatherForecast.map((row) => {
+      const mainContents = row.map((item, i) => {
+        return {
           "type": "text",
           "text": item,
           "flex": flexFactorList[i],
           "align": "center",
           "wrap": false
         };
-        return obj;
       });
-      const contentsWithSeparator = mainContents.reduce((prev, current) => {
-        const obj = {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [],
-          "backgroundColor": "#55534760",
-          "flex": separatorWidth
-        };
-        return [...prev, obj, current];
+
+      const separator = {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "backgroundColor": "#B75D69",
+        "flex": separatorWidth
+      };
+      const contentsWithSeparator = mainContents.slice(1).reduce((prev, current) => {
+        return [...prev, separator, current];
       }, [mainContents[0]]);
 
       const contents = [
-        ...marginItem,
+        {...marginItem},
         ...contentsWithSeparator,
-        ...marginItem
+        {...marginItem}
       ];
 
-      const currentValue = {
+      const weatherForcastEachDay = {
         "type": "box",
         "layout": "horizontal",
         "contents": contents,
         "spacing": "sm"
       };
-      
-      const result = {
-        ...prev,
-        ...currentValue
-      };
-      return result;
-    }, {});
+      return weatherForcastEachDay;
+    });
 
     const json = {
       "type": "flex",
       "altText": altText,
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "週間天気予報",
+            "offsetEnd": "sm",
+            "weight": "bold",
+            "size": "lg",
+            "color": "#1C4C73B0"
+          }
+        ],
+        "alignItems": "center",
+        "backgroundColor": "#BFC3BAA5",
+        "height": "50px",
+        "justifyContent": "center"
+      },
       "contents": {
         "type": "bubble",
         "body": {
           "type": "box",
           "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": title,
-              "offsetEnd": "sm",
-              "weight": "bold",
-              "size": "lg"
-            },
-            ...messageContents,
-          ],
+          "contents": messageContents,
           "justifyContent": "center",
           "alignItems": "center",
           "spacing": "md",
