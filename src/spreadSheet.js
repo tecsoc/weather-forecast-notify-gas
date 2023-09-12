@@ -202,14 +202,16 @@ class SpreadSheet {
     console.log(`降水確率:\n${rainfallProbabilityData}`);
     // 降水確率の配列の初期化
     const rainfallProbabilityPercent = Array.from({ length: 4 }, () => "-- %" );
-    // 今日の日付をyyyy/mm/dd 形式で取得
+    // 後ろから走査して後ろから順番にデータを入れたいのでreverseしたデータを保持
+    // （現在時刻によって天気が4つない場合があるため）
+    const reversedRainfallProbabilityData = rainfallProbabilityData.reverse();
     const today = Utilities.formatDate( new Date(), 'Asia/Tokyo', 'yyyy/MM/dd');
-    rainfallProbabilityData.reverse().forEach((row, i) => {
-      if (i >= rainfallProbabilityPercent.length) return;
-      if (row[0] === today) {
-        rainfallProbabilityPercent[rainfallProbabilityPercent.length - i] = row[this.RainfallProbabilityPercentColumn - 1];
+    for (let i = 0, matchCount = 0; i < reversedRainfallProbabilityData.length && matchCount < reversedRainfallProbabilityData.length; i++) {
+      if (reversedRainfallProbabilityData[i][0] === today) {
+        rainfallProbabilityPercent[rainfallProbabilityPercent.length - 1 - matchCount] = reversedRainfallProbabilityData[i][this.RainfallProbabilityPercentColumn - 1];
+        matchCount++;
       }
-    });
+    };
     return rainfallProbabilityPercent;
   }
 

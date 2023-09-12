@@ -109,7 +109,7 @@ class fetchJMA {
       return [
         item.getChildText('DateTime', this.namespace).replace(/([0-9]{4})-([0-9]{2})-([0-9]{2}).+/m, '$1/$2/$3'),
         weatherPartElements[i].getText(),
-        probabilityOfPrecipitationPartElements[i].getText() || "  ",
+        probabilityOfPrecipitationPartElements[i].getText() || "   ",
         reliabilityClassPartElements[i].getText() || "-",
       ]
     });
