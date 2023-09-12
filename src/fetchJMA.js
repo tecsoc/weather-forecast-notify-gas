@@ -84,7 +84,7 @@ class fetchJMA {
     if (!weatherOverviewSrcUrl) throw new Error("天気概況のURLが取得できませんでした");
     const xml = this.getXML(weatherOverviewSrcUrl);
     let weatherOverview = xml.getRootElement().getChild('Body', this.namespace).getChild('Comment', this.namespace).getChildText('Text', this.namespace);
-    weatherOverview = weatherOverview.trim();
+    weatherOverview = weatherOverview.replace(/[ 　]/g, "");
     weatherOverview = weatherOverview.replace(/。伊豆諸島.+。/g, "。");
     weatherOverview = weatherOverview.replace(/\n\【関東甲信地方\】(\S|\s)+/gm, "");
     return weatherOverview;
@@ -109,7 +109,7 @@ class fetchJMA {
       return [
         item.getChildText('DateTime', this.namespace).replace(/([0-9]{4})-([0-9]{2})-([0-9]{2}).+/m, '$1/$2/$3'),
         weatherPartElements[i].getText(),
-        probabilityOfPrecipitationPartElements[i].getText() || "   ",
+        probabilityOfPrecipitationPartElements[i].getText() || "",
         reliabilityClassPartElements[i].getText() || "-",
       ]
     });

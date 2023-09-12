@@ -192,26 +192,28 @@ class LineApiClient {
     const json = {
       "type": "flex",
       "altText": altText,
-      "header": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "text",
-            "text": "週間天気予報",
-            "offsetEnd": "sm",
-            "weight": "bold",
-            "size": "lg",
-            "color": "#1C4C73B0"
-          }
-        ],
-        "alignItems": "center",
-        "backgroundColor": "#BFC3BAA5",
-        "height": "50px",
-        "justifyContent": "center"
-      },
       "contents": {
         "type": "bubble",
+        "hero": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "週間天気予報",
+              "offsetEnd": "sm",
+              "weight": "bold",
+              "size": "lg",
+              "color": "#1C4C73B0",
+              "margin": "none"
+            }
+          ],
+          "alignItems": "center",
+          "backgroundColor": "#BFC3BAA5",
+          "justifyContent": "center",
+          "paddingAll": "lg",
+          "paddingTop": "lg"
+        },
         "body": {
           "type": "box",
           "layout": "vertical",
