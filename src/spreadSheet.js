@@ -134,7 +134,8 @@ class SpreadSheet {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return false;
-    this.setValues(settings, ...this.getWeekdayRangeByUser(userIdIndex));
+    this.setValues([settings], ...this.getWeekdayRangeByUser(userIdIndex));
+    this.releaseEditLock();
   }
   getDeliverySettings(userId) {
     this.setDeliverySettingSheet();
