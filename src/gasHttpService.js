@@ -3,7 +3,7 @@ const doGet = (e) => {
   const userId = e.parameter.userId;
   const sheet = new SpreadSheet();
   if (e.parameter.type === 'updateSetting') {
-    const result = sheet.setDeliverySettings(userId, e.parameter.settings);
+    const result = sheet.setDeliverySettings(userId, e.parameters.settings);
     response.result = result;
   } else {
     const settings = sheet.getDeliverySettings(userId);

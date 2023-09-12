@@ -130,11 +130,13 @@ class SpreadSheet {
   getWeekdayRangeByUser(index) {
     return [index, this.DeliverySettingFirstColumn, 1, this.SettingLength];
   }
+
   setDeliverySettings(userId, settings) {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return false;
-    this.setValues([settings], ...this.getWeekdayRangeByUser(userIdIndex));
+    const values = [settings];
+    this.setValues(values, ...this.getWeekdayRangeByUser(userIdIndex));
     this.releaseEditLock();
   }
   getDeliverySettings(userId) {
