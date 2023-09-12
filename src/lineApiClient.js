@@ -144,77 +144,55 @@ class LineApiClient {
   // 週間天気予報のリッチメッセージを追加する
   pushLichWeeklyWeatherForecastMessage(payload, title, weeklyWeatherForecast){
     const altText = weeklyWeatherForecast.map((row) => row.join(" ")).join("\n");
+    const separatorWidth = 2;
+    const marginItem = {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [],
+      "flex": 0
+    };
+    const flexFactorList = [45, 75, 24, 12]
+    const messageContents = weeklyWeatherForecast.reduce((prev, row, i) => {
+      const mainContents = row.map((item) => {
+        const obj = {
+          "type": "text",
+          "text": item,
+          "flex": flexFactorList[i],
+          "align": "center",
+          "wrap": false
+        };
+        return obj;
+      });
+      const contentsWithSeparator = mainContents.reduce((prev, current) => {
+        const obj = {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [],
+          "backgroundColor": "#55534760",
+          "flex": separatorWidth
+        };
+        return [...prev, obj, current];
+      }, [mainContents[0]]);
 
-    const messqgeContents = weeklyWeatherForecast.map((row) => {
-      return {
+      const contents = [
+        ...marginItem,
+        ...contentsWithSeparator,
+        ...marginItem
+      ];
+
+      const currentValue = {
         "type": "box",
         "layout": "horizontal",
-        "contents": [
-          {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [],
-            "flex": 0
-          },
-          {
-            "type": "text",
-            "text": row[0],
-            "align": "center",
-            "gravity": "center",
-            "flex": 15
-          },
-          {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [],
-            "backgroundColor": "#55534760",
-            "flex": 1
-          },
-          {
-            "type": "text",
-            "text": row[1],
-            "flex": 25,
-            "wrap": false,
-            "align": "center"
-          },
-          {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [],
-            "backgroundColor": "#55534760",
-            "flex": 1
-          },
-          {
-            "type": "text",
-            "text": row[2],
-            "flex": 8,
-            "align": "center",
-            "wrap": false
-          },
-          {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [],
-            "backgroundColor": "#55534760",
-            "flex": 1
-          },
-          {
-            "type": "text",
-            "text": row[3],
-            "flex": 4,
-            "align": "center",
-            "wrap": false
-          },
-          {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [],
-            "flex": 0
-          }
-        ],
+        "contents": contents,
         "spacing": "sm"
-      }
-    });
+      };
+      
+      const result = {
+        ...prev,
+        ...currentValue
+      };
+      return result;
+    }, {});
 
     const json = {
       "type": "flex",
@@ -229,9 +207,10 @@ class LineApiClient {
               "type": "text",
               "text": title,
               "offsetEnd": "sm",
-              "weight": "bold"
+              "weight": "bold",
+              "size": "lg"
             },
-            ...messqgeContents,
+            ...messageContents,
           ],
           "justifyContent": "center",
           "alignItems": "center",
