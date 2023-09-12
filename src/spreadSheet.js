@@ -123,6 +123,7 @@ class SpreadSheet {
   }
 
   getUserIndex(userId) {  
+    this.setDeliverySettingSheet();
     return this.searchRow(this.UserIdColumn, userId);
   }
 
@@ -148,7 +149,7 @@ class SpreadSheet {
     this.setDeliverySettingSheet();
     const index = this.getUserIndex(userId);
     if (index === 0) return;
-    this.setValue(flag, index + 1, this.LogicalDeleteFlagColumn);
+    this.setValue(flag, index, this.LogicalDeleteFlagColumn);
     this.releaseEditLock();
   }
 
@@ -164,7 +165,7 @@ class SpreadSheet {
     const row = this.sheet.getLastRow() + 1;
     const initialSettings = [1, 1, 1, 1, 1, 1, 1, 1, 1];
     const values = [[userId, userName, ...initialSettings]];
-    this.setValues(values, row, this.UserIdColumn, 1, this.DeliverySettingLastColumn - this.UserNameColumn + 1);
+    this.setValues(values, row, this.UserIdColumn, 1, this.DeliverySettingLastColumn - this.UserIdColumn + 1);
     this.releaseEditLock();
   }
 
