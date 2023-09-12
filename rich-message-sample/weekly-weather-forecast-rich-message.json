@@ -1,0 +1,102 @@
+{
+  "type": "bubble",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "週間天気予報",
+        "offsetEnd": "sm",
+        "weight": "bold",
+        "size": "lg",
+        "color": "#1C4C73B0"
+      }
+    ],
+    "alignItems": "center",
+    "backgroundColor": "#BFC3BAA5",
+    "height": "50px",
+    "justifyContent": "center"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "flex": 0
+          },
+          {
+            "type": "text",
+            "text": "09/11(月) ",
+            "align": "center",
+            "gravity": "center",
+            "flex": 45
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#B75D69",
+            "flex": 2
+          },
+          {
+            "type": "text",
+            "text": "くもり時々晴れ",
+            "flex": 70,
+            "wrap": false,
+            "align": "center"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#B75D69",
+            "flex": 2
+          },
+          {
+            "type": "text",
+            "text": "30%",
+            "flex": 24,
+            "align": "center",
+            "wrap": false
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#B75D69",
+            "flex": 2
+          },
+          {
+            "type": "text",
+            "text": "A",
+            "flex": 12,
+            "align": "center",
+            "wrap": false
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "flex": 0
+          }
+        ],
+        "spacing": "sm"
+      }
+    ],
+    "justifyContent": "center",
+    "alignItems": "center",
+    "spacing": "md",
+    "paddingTop": "md",
+    "paddingBottom": "md",
+    "paddingStart": "sm",
+    "paddingEnd": "sm"
+  }
+}
