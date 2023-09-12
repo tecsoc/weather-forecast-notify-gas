@@ -138,6 +138,7 @@ class SpreadSheet {
     const values = [settings];
     this.setValues(values, ...this.getWeekdayRangeByUser(userIdIndex));
     this.releaseEditLock();
+    return true;
   }
   getDeliverySettings(userId) {
     this.setDeliverySettingSheet();
