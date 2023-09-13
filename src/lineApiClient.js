@@ -141,53 +141,86 @@ class LineApiClient {
     return this.postFetch('/message/multicast', payload);
   }
 
+  joinSeparator(list, separator) {
+    if (list.length === 0) return [];
+    return list.slice(1).reduce((prev, current) => {
+      return [...prev, separator, current];
+    }, [list[0]]);
+  }
+
   // 週間天気予報のリッチメッセージを追加する
   pushLichWeeklyWeatherForecastMessage(payload, title, weeklyWeatherForecast){
     const altText = weeklyWeatherForecast.map((row) => row.join(" ")).join("\n");
     const separatorWidth = 2;
+    const separator = {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [],
+      "backgroundColor": "#B75D69",
+      "flex": separatorWidth
+    };
     const marginItem = {
       "type": "box",
       "layout": "vertical",
       "contents": [],
       "flex": 0
     };
-    const flexFactorList = [45, 70, 24, 12]
-    const messageContents = weeklyWeatherForecast.map((row) => {
+    const eachRowObject = {
+      "type": "box",
+      "layout": "horizontal",
+      "contents": null,
+      "spacing": "sm"
+    };
+    const flexFactorList = [30, 45, 20, 15];
+    const headerData = ["日付", "天気", "確率", "信頼度"].map((columnName, i) => {
+      const size = columnName === "信頼度" ? "xxs" : "sm";
+      return {
+        "type": "text",
+        "text": "信頼度",
+        "flex": flexFactorList[i],
+        "align": "center",
+        "wrap": false,
+        "size": size,
+        "gravity": "center"
+      };
+    });
+
+    const headerDataWithSeparator = this.joinSeparator(headerData, separator);
+    const headerRowObject = {
+      ...eachRowObject,
+      "contents": headerDataWithSeparator
+    }
+
+    const weeklyWeatherForecatData = weeklyWeatherForecast.map((row) => {
       const mainContents = row.map((item, i) => {
         return {
           "type": "text",
           "text": item,
-          "flex": flexFactorList[i],
           "align": "center",
-          "wrap": false
+          "flex": flexFactorList[i],
+          "size": "sm"
         };
       });
+      const contentsWithSeparator = this.joinSeparator(mainContents, separator);
 
-      const separator = {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "backgroundColor": "#B75D69",
-        "flex": separatorWidth
-      };
-      const contentsWithSeparator = mainContents.slice(1).reduce((prev, current) => {
-        return [...prev, separator, current];
-      }, [mainContents[0]]);
-
-      const contents = [
+      const weatherForcastContents = [
         {...marginItem},
         ...contentsWithSeparator,
         {...marginItem}
       ];
 
       const weatherForcastEachDay = {
-        "type": "box",
-        "layout": "horizontal",
-        "contents": contents,
-        "spacing": "sm"
-      };
+        ...eachRowObject,
+        "contents": weatherForcastContents
+      }
       return weatherForcastEachDay;
     });
+
+
+    const contents = [
+      {...headerRowObject},
+      ...weeklyWeatherForecatData,
+    ]
 
     const json = {
       "type": "flex",
@@ -217,7 +250,7 @@ class LineApiClient {
         "body": {
           "type": "box",
           "layout": "vertical",
-          "contents": messageContents,
+          "contents": contents,
           "justifyContent": "center",
           "alignItems": "center",
           "spacing": "md",

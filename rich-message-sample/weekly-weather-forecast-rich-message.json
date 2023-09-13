@@ -15,8 +15,8 @@
     ],
     "alignItems": "center",
     "backgroundColor": "#BFC3BAA5",
-    "height": "50px",
-    "justifyContent": "center"
+    "justifyContent": "center",
+    "height": "50px"
   },
   "body": {
     "type": "box",
@@ -34,10 +34,79 @@
           },
           {
             "type": "text",
+            "text": "日付",
+            "align": "center",
+            "gravity": "center",
+            "flex": 30,
+            "size": "sm"
+          },
+          ,
+          {
+            "type": "text",
+            "text": "天気",
+            "flex": 45,
+            "wrap": false,
+            "align": "center",
+            "size": "sm"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#B75D69",
+            "flex": 2
+          },
+          {
+            "type": "text",
+            "text": "確率",
+            "flex": 20,
+            "align": "center",
+            "wrap": false,
+            "size": "sm"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "backgroundColor": "#B75D69",
+            "flex": 2
+          },
+          {
+            "type": "text",
+            "text": "信頼度",
+            "flex": 15,
+            "align": "center",
+            "wrap": false,
+            "size": "xxs",
+            "gravity": "center"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "flex": 0
+          }
+        ],
+        "spacing": "sm",
+        "backgroundColor": "#9AC2C950"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [],
+            "flex": 0
+          },
+          {
+            "type": "text",
             "text": "09/11(月) ",
             "align": "center",
             "gravity": "center",
-            "flex": 45
+            "flex": 30,
+            "size": "sm"
           },
           {
             "type": "box",
@@ -49,9 +118,10 @@
           {
             "type": "text",
             "text": "くもり時々晴れ",
-            "flex": 70,
+            "flex": 45,
             "wrap": false,
-            "align": "center"
+            "align": "center",
+            "size": "sm"
           },
           {
             "type": "box",
@@ -63,9 +133,10 @@
           {
             "type": "text",
             "text": "30%",
-            "flex": 24,
+            "flex": 20,
             "align": "center",
-            "wrap": false
+            "wrap": false,
+            "size": "sm"
           },
           {
             "type": "box",
@@ -77,9 +148,10 @@
           {
             "type": "text",
             "text": "A",
-            "flex": 12,
+            "flex": 15,
             "align": "center",
-            "wrap": false
+            "wrap": false,
+            "size": "sm"
           },
           {
             "type": "box",
@@ -89,14 +161,94 @@
           }
         ],
         "spacing": "sm"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [],
+                "flex": 0
+              },
+              {
+                "type": "text",
+                "text": "09/11(月) ",
+                "align": "center",
+                "gravity": "center",
+                "flex": 30,
+                "size": "sm"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [],
+                "backgroundColor": "#B75D69",
+                "flex": 2
+              },
+              {
+                "type": "text",
+                "text": "くもり時々晴れ",
+                "flex": 45,
+                "wrap": false,
+                "align": "center",
+                "size": "sm"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [],
+                "backgroundColor": "#B75D69",
+                "flex": 2
+              },
+              {
+                "type": "text",
+                "text": "30%",
+                "flex": 20,
+                "align": "center",
+                "wrap": false,
+                "size": "sm"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [],
+                "backgroundColor": "#B75D69",
+                "flex": 2
+              },
+              {
+                "type": "text",
+                "text": "A",
+                "flex": 15,
+                "align": "center",
+                "wrap": false,
+                "size": "sm"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [],
+                "flex": 0
+              }
+            ],
+            "spacing": "sm"
+          }
+        ],
+        "width": "100%",
+        "spacing": "sm"
       }
     ],
     "justifyContent": "center",
     "alignItems": "center",
-    "spacing": "md",
-    "paddingTop": "md",
-    "paddingBottom": "md",
-    "paddingStart": "sm",
-    "paddingEnd": "sm"
+    "spacing": "sm",
+    "paddingBottom": "sm",
+    "paddingTop": "sm",
+    "paddingStart": "none",
+    "paddingEnd": "none"
   }
 }
