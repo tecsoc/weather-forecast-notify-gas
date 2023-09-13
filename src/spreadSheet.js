@@ -234,7 +234,7 @@ class SpreadSheet {
       const weekdayStr = weekdayArray[dateObject.getDay()];
       row[0] = row[0].replace(/[0-9]{4}\//,"");
       row[0] += `(${weekdayStr})`;
-      if (row[2]) row[2] += "%";
+      row[2] += row[2] ? "%" : '-';
       return row.join(" ");
     });
     return weeklyWeatherForecastList;
