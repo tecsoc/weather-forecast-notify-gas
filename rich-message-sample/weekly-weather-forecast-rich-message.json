@@ -40,7 +40,6 @@
             "flex": 30,
             "size": "sm"
           },
-          ,
           {
             "type": "text",
             "text": "天気",

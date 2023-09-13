@@ -148,6 +148,10 @@ class LineApiClient {
     }, [list[0]]);
   }
 
+  insertStartAndEnd(list,  firstItem, lastItem=firstItem) {
+    return [firstItem, ...list, lastItem];
+  }
+
   // 週間天気予報のリッチメッセージを追加する
   pushLichWeeklyWeatherForecastMessage(payload, title, weeklyWeatherForecast){
     const altText = weeklyWeatherForecast.map((row) => row.join(" ")).join("\n");
@@ -176,7 +180,7 @@ class LineApiClient {
       const size = columnName === "信頼度" ? "xxs" : "sm";
       return {
         "type": "text",
-        "text": "信頼度",
+        "text": columnName,
         "flex": flexFactorList[i],
         "align": "center",
         "wrap": false,
@@ -186,9 +190,11 @@ class LineApiClient {
     });
 
     const headerDataWithSeparator = this.joinSeparator(headerData, separator);
+    const finalHeaderData = this.insertStartAndEnd(headerDataWithSeparator, marginItem);
     const headerRowObject = {
       ...eachRowObject,
-      "contents": headerDataWithSeparator
+      "contents": finalHeaderData,
+      "backgroundColor": "#9AC2C950"
     }
 
     const weeklyWeatherForecatData = weeklyWeatherForecast.map((row) => {
@@ -202,12 +208,7 @@ class LineApiClient {
         };
       });
       const contentsWithSeparator = this.joinSeparator(mainContents, separator);
-
-      const weatherForcastContents = [
-        {...marginItem},
-        ...contentsWithSeparator,
-        {...marginItem}
-      ];
+      const weatherForcastContents = this.insertStartAndEnd(contentsWithSeparator, marginItem, marginItem);
 
       const weatherForcastEachDay = {
         ...eachRowObject,
