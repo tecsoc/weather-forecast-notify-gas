@@ -178,7 +178,7 @@ class SpreadSheet {
     if (isHoliday()) {
       return this.DeliverySettingLastColumn;
     }
-    return weekday + this.DeliverySettingFirstColumn - 1;
+    return weekday + this.DeliverySettingFirstColumn;
   }
 
   getPushTargetUserList() {

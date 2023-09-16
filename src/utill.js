@@ -27,3 +27,9 @@ const resetSpreadSheetEditLoack = () => {
   const sheet = new SpreadSheet();
   sheet.releaseEditLock();
 }
+
+const getTodayTargetUserList = () => {
+  const sheet = new SpreadSheet();
+  const targetUserList = sheet.getPushTargetUserList();
+  console.log(`送信対象ユーザーIDリスト: ${targetUserList}`);
+};
