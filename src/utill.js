@@ -1,10 +1,7 @@
 //曜日を取得
 const getWeekday = () => {
   const weekday = new Date().getDay() - 1;
-  if(weekday === -1){
-    weekday = 6;
-  }
-  return weekday;
+  return weekday === -1 ? 6 : weekday;
 }
 
 //祝日か判定
