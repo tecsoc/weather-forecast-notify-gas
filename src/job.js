@@ -1,5 +1,5 @@
 const everyMorning = () => {
-  fetchJMAWeatherInfo();
+  fetchJmaWeatherInfo();
   pushWeatherForecastForTargetUser();
 };
 
@@ -18,10 +18,12 @@ const pushWeatherForecastForTargetUser = () => {
   console.log('送信レスポンス：\n', response);
 };
 
-const fetchJMAWeatherInfo = () => {
+const fetchJmaWeatherInfo = () => {
   const fetchWeatherHandler = new FetchJma();
   const sheet = new SpreadSheet();
   
+  fetchWeatherHandler.fetchWeatherJson();
+
   const rainfallProbabilityList = fetchWeatherHandler.getRainfallProbability();
   const weatherOverview = fetchWeatherHandler.fetchWeatherOverview();
   const weeklyWeatherForecastList = fetchWeatherHandler.getWeeklyWeatherForecast();
