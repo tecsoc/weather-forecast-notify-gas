@@ -19,7 +19,7 @@ const pushWeatherForecastForTargetUser = () => {
 };
 
 const fetchJMAWeatherInfo = () => {
-  const fetchWeatherHandler = new fetchJMA();
+  const fetchWeatherHandler = new FetchJma();
   const sheet = new SpreadSheet();
   
   const rainfallProbabilityList = fetchWeatherHandler.getRainfallProbability();

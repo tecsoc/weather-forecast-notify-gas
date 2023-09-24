@@ -1,4 +1,4 @@
-class fetchJMA {
+class FetchJma {
 
   constructor () {
     this.namespace = XmlService.getNamespace('http://xml.kishou.go.jp/jmaxml1/body/meteorology1/');
