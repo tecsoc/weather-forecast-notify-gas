@@ -7,9 +7,10 @@ class SpreadSheet {
     this.UserNameColumn = 3;
     // 配信有効設定列
     this.LogicalDeleteFlagColumn = 4;
-    this.DeliverySettingLastColumn = 12;
-    this.DeliverySettingFirstColumn = 5;
-    this.SettingLength = this.DeliverySettingLastColumn - this.DeliverySettingFirstColumn + 1;
+    this.baseRainfallProbabilityColumn = 5;
+    this.DeliverySettingFirstColumn = 6;
+    this.SettingLength = 8;
+    this.DeliverySettingLastColumn = this.DeliverySettingFirstColumn + this.SettingLength - 1;
     this.FirstDataRow = 3;
     this.RainfallProbabilityPercentColumn = 3;
     // 排他待機時間
@@ -181,7 +182,15 @@ class SpreadSheet {
     return weekday + this.DeliverySettingFirstColumn;
   }
 
+  getMaxRainfallProbability() {
+    this.setRainfallProbabilitySheet();
+    const rainfallProbabilites = this.sheet.getRange(1, this.sheet.getLastColumn(), this.sheet.getLastRow()).getValues()[0];
+    const maxRainfallProbability = Math.max(...rainfallProbabilites);
+    return maxRainfallProbability;
+  }
+
   getPushTargetUserList() {
+    const maxRainfallProbability = this.getMaxRainfallProbability();
     this.setDeliverySettingSheet();
     const offsetColumn = this.getWeekdayColumn();
     const offsetRow = this.sheet.getLastRow() - this.FirstDataRow + 1;
@@ -191,9 +200,14 @@ class SpreadSheet {
     const userIdIndex = this.UserIdColumn - 1;
     const pushTargetuserList = database.flatMap((row) => {
       console.log(`データ:${row[logicalDeleteIndex]}, データ型${typeof row[logicalDeleteIndex]}`);
+      // 有効なユーザーに限定
       if (row[logicalDeleteIndex] === 1) {
+        // 曜日・祝日の配信設定が有効なユーザーに限定
         if (row[weekdayIndex] === 1) {
-          return row[userIdIndex];
+          // 今日の最大降水確率が設定値以上のユーザーに限定
+          if (maxRainfallProbability >= row[this.baseRainfallProbabilityColumn - 1]) {
+            return row[userIdIndex];
+          }
         } 
       }
       return [];
