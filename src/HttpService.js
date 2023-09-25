@@ -3,7 +3,7 @@ const doGet = (e) => {
   const userId = e.parameter.userId;
   const sheet = new SpreadSheet();
   if (e.parameter.type === 'updateSetting') {
-    response.result = sheet.setDeliverySettings(userId, e.parameters.settings, e.parameters.rainfallProbabilites);
+    response.result = sheet.setDeliverySettings(userId, e.parameters.settings, e.parameters.rainfallProbabilities);
   } else {
     const settings = sheet.getDeliverySettings(userId);
     const baseRainfallProbabilities = sheet.getBaseRainfallProbabilities(userId);
