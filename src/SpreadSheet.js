@@ -12,7 +12,7 @@ class SpreadSheet {
     this.SettingLength = 8;
     this.DeliverySettingLastColumn = this.DeliverySettingFirstColumn + this.SettingLength - 1;
     this.FirstDataRow = 3;
-    this.RainfallProbabilityPercentColumn = 3;
+    this.RainfallProbabilityPercentColumn = 4;
     // 排他待機時間
     this.waitTimeForExclusive = 500;
     this.timeOutMilliSec = 10000;
@@ -215,41 +215,35 @@ class SpreadSheet {
     return pushTargetuserList;
   }
 
-  getRainfallProbabilityPercentList(){
+  getRainfallProbabilityPercents() {
     this.setRainfallProbabilitySheet();
-    const rainfallProbabilityData = this.sheet.getRange(1, 1, this.sheet.getLastRow(), this.sheet.getLastColumn()).getDisplayValues();
+    // LINE側が4件までしか対応していないため4件分のデータを取得
+    const rainfallProbabilityData = this.sheet.getRange(1, 1, 4, this.sheet.getLastColumn()).getValues();
     console.log(`降水確率:\n${rainfallProbabilityData}`);
-    // 降水確率の配列の初期化
-    const rainfallProbabilityPercent = Array.from({ length: 4 }, () => "-- %" );
-    // 後ろから走査して後ろから順番にデータを入れたいのでreverseしたデータを保持
-    // （現在時刻によって天気が4つない場合があるため）
-    const reversedRainfallProbabilityData = rainfallProbabilityData.reverse();
-    const today = Utilities.formatDate( new Date(), 'Asia/Tokyo', 'yyyy/MM/dd');
-    for (let i = 0, matchCount = 0; i < reversedRainfallProbabilityData.length && matchCount < reversedRainfallProbabilityData.length; i++) {
-      if (reversedRainfallProbabilityData[i][0] === today) {
-        rainfallProbabilityPercent[rainfallProbabilityPercent.length - 1 - matchCount] = reversedRainfallProbabilityData[i][this.RainfallProbabilityPercentColumn - 1];
-        matchCount++;
-      }
-    };
-    return rainfallProbabilityPercent;
+    // 2~4列目のみに抽出
+    const rainfallProbabilityPercents = rainfallProbabilityData.map((row) => {
+      return row.slice(1);
+    });
+    return rainfallProbabilityPercents;
   }
 
-  getWeatherOverview(){
+  getWeatherOverview() {
     this.setWeatherOverviewSheet();
-    return this.sheet.getRange(1, 1).getValue();
+    const weatherOverview = this.sheet.getRange(1, 1).getValue();
+    return weatherOverview;
   }
 
   getWeeklyWeatherForecast() {
     this.setWeeklyWeatherForecastSheet();
-    const weeklyWeatherForecastList = this.sheet.getRange(1, 1, this.sheet.getLastRow(), this.sheet.getLastColumn()).getDisplayValues();
-    const weekdayArray = "日月火水木金土";
+    const weeklyWeatherForecastList = this.sheet.getRange(1, 1, this.sheet.getLastRow(), this.sheet.getLastColumn()).getValues();
+
     weeklyWeatherForecastList.forEach((row) => {
       const dateObject = new Date(row[0]);
-      const weekdayStr = weekdayArray[dateObject.getDay()];
-      row[0] = row[0].replace(/[0-9]{4}\//,"");
-      row[0] += `(${weekdayStr})`;
-      row[2] += row[2] ? "%" : '-';
-      return row.join(" ");
+      const weekdayStr = getWeekdayStr(dateObject);
+      row[0] = `${dateToYYYYMMDD(dateObject)}(${weekdayStr})`;
+      row[2] += row[2] ? "%" : "-";
+      row[3] = row[3] || "-";
+      return row;
     });
     return weeklyWeatherForecastList;
   }

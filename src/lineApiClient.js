@@ -87,17 +87,17 @@ class LineApiClient {
   }
 
   createTemplateWeatherForecastMessage(payload, sheet) {
-    const weatherOverview = sheet.getWeatherOverview();
-    const rainfallProbabilityPercentList = sheet.getRainfallProbabilityPercentList();
+    const rainfallProbabilityPercents = sheet.getRainfallProbabilityPercents();
     const weeklyWeatherForecastList = sheet.getWeeklyWeatherForecast();
+    const weatherOverview = sheet.getWeatherOverview();
 
-    console.log(`天気概況:\n\n${weatherOverview}`);
-    console.log(`\n\n降水確率:\n${rainfallProbabilityPercentList}`);
-    console.log(`\n週間天気予報:\n${weeklyWeatherForecastList}`);
+    console.log(`降水確率:\n${rainfallProbabilityPercents}`);
+    console.log(`週間天気予報:\n${weeklyWeatherForecastList}`);
+    console.log(`天気概況:\n${weatherOverview}`);
 
-    payload = this.pushTextMessage(payload, weatherOverview);
-    payload = this.pushLichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercentList)
+    payload = this.pushLichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercents)
     payload = this.pushLichWeeklyWeatherForecastMessage(payload, "週間天気予報", weeklyWeatherForecastList);
+    payload = this.pushTextMessage(payload, weatherOverview);
     return payload;
   }
 
@@ -267,10 +267,13 @@ class LineApiClient {
     return payload;
   }
 
-  pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityPercentList) {
-    const time = ["00時","06時","12時","18時","24時"];
-    const color = ["#6486E3","#ffe600","#ffac43","#c30068","#00904a"];
-    const altText = [title, ...rainfallProbabilityPercentList].join("\n");
+  pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityDatas) {
+    const lastRangeHour = rainfallProbabilityDatas[rainfallProbabilityDatas.length - 1][1];
+    const hourNums = [...rainfallProbabilityDatas.map(item => item[0]), lastRangeHour];
+    const hours = hourNums.map((item) => `${item.toString().padStart(2, "0")}時`);
+    const rainfallProbabilityPercents = rainfallProbabilityDatas.map(item => `${item[2]}%`);
+    const color = ["#1B5D9C","#EE6352","#FAC05E","#59CD90","#3099C0"];
+    const altText = [title, ...rainfallProbabilityPercents].join("\n");
   
     const json = {
       "type": "flex",
@@ -304,7 +307,7 @@ class LineApiClient {
       }
     };
     
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 0; i < hours.length; i++) {
       json['contents']['body']['contents'].push(
         {
           "type": "box",
@@ -328,7 +331,7 @@ class LineApiClient {
                   "cornerRadius": "30px",
                   "height": "20px",
                   "width": "20px",
-                  "borderColor": color[i - 1],
+                  "borderColor": color[i],
                   "borderWidth": "3px"
                 },
                 {
@@ -341,7 +344,7 @@ class LineApiClient {
             },
             {
               "type": "text",
-              "text": time[i - 1],
+              "text": hours[i],
               "gravity": "center",
               "flex": 0,
               "size": "lg",
@@ -352,7 +355,7 @@ class LineApiClient {
           "cornerRadius": "30px"
         }
       );
-      if (i !== 5){
+      if (i < hours.length - 1){
         json['contents']['body']['contents'].push(
           {
             "type": "box",
@@ -395,7 +398,7 @@ class LineApiClient {
               },
               {
                 "type": "text",
-                "text": rainfallProbabilityPercentList[i - 1],
+                "text": rainfallProbabilityPercents[i],
                 "gravity": "center",
                 "size": "lg",
                 "color": "#8c8c8c",

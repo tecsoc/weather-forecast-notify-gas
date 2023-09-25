@@ -16,8 +16,8 @@ const isHoliday = () => {
 }
 
 const getWeekdayStr = (dayObject) => {
-  const weekdayStr = "日月火水木金土";
-  return weekdayStr[dayObject.getDay()];
+  const weekdayArray = ["日", "月", "火", "水", "木", "金", "土"];
+  return weekdayArray[dayObject.getDay()];
 }
 
 const resetSpreadSheetEditLoack = () => {
