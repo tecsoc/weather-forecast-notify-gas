@@ -16,8 +16,8 @@ const isHoliday = () => {
 }
 
 const getWeekdayStr = (dayObject) => {
-  const weekdayStr = "日月火水木金土";
-  return weekdayStr[dayObject.getDay()];
+  const weekdayArray = ["日", "月", "火", "水", "木", "金", "土"];
+  return weekdayArray[dayObject.getDay()];
 }
 
 const resetSpreadSheetEditLoack = () => {
@@ -30,3 +30,21 @@ const getTodayTargetUserList = () => {
   const targetUserList = sheet.getPushTargetUserList();
   console.log(`送信対象ユーザーIDリスト: ${targetUserList}`);
 };
+
+const dateToYYYYMMDD = (date) => {
+  const dateFormat = Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  return dateFormat.format(date);
+}
+
+const dateToHH = (date) => {
+  const dateFormat = Intl.DateTimeFormat('es-ES', {
+    timeZone: 'Asia/Tokyo',
+    hour: '2-digit'
+  });
+  return dateFormat.format(date);
+}
