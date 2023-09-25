@@ -3,13 +3,13 @@ const doGet = (e) => {
   const userId = e.parameter.userId;
   const sheet = new SpreadSheet();
   if (e.parameter.type === 'updateSetting') {
-    response.result = sheet.setDeliverySettings(userId, e.parameters.settings, e.parameters.rainfallProbabilities);
+    response.result = sheet.setDeliverySettings(userId, e.parameters.settings, e.parameter.baseRainfallProbability);
   } else {
     const settings = sheet.getDeliverySettings(userId);
-    const baseRainfallProbabilities = sheet.getBaseRainfallProbabilities(userId);
+    const baseRainfallProbability = sheet.getBaseRainfallProbability(userId);
     if (settings.length) {
       response.settings = settings;
-      response.baseRainfallProbabilities = baseRainfallProbabilities;
+      response.baseRainfallProbability = baseRainfallProbability;
     } else {
       response.error = `Not Found User: ${userId}`;
     }

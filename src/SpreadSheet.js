@@ -132,13 +132,13 @@ class SpreadSheet {
     return [index, this.DeliverySettingFirstColumn, 1, this.DeliverySettingLength];
   }
 
-  setDeliverySettings(userId, settings, rainfallProbabilites) {
+  setDeliverySettings(userId, settings, rainfallProbability) {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return false;
     const values = [settings];
     this.setValues(values, ...this.getUserSettingRange(userIdIndex));
-    this.setValue(rainfallProbabilites, userIdIndex, this.baseRainfallProbabilityColumn);
+    this.setValue(rainfallProbability, userIdIndex, this.baseRainfallProbabilityColumn);
     this.releaseEditLock();
     return true;
   }
@@ -150,12 +150,12 @@ class SpreadSheet {
     return settings[0];
   }
 
-  getBaseRainfallProbabilities(userId) {
+  getBaseRainfallProbability(userId) {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return 0;
-    const baseRainfallProbabilities = this.sheet.getRange(userIdIndex, this.baseRainfallProbabilityColumn).getValue();
-    return baseRainfallProbabilities;
+    const baseRainfallProbability = this.sheet.getRange(userIdIndex, this.baseRainfallProbabilityColumn).getValue();
+    return baseRainfallProbability;
   }
 
   // 論理削除フラグを変更
