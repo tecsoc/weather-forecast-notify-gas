@@ -9,8 +9,8 @@ class SpreadSheet {
     this.LogicalDeleteFlagColumn = 4;
     this.baseRainfallProbabilityColumn = 5;
     this.DeliverySettingFirstColumn = 6;
-    this.SettingLength = 8;
-    this.DeliverySettingLastColumn = this.DeliverySettingFirstColumn + this.SettingLength - 1;
+    this.DeliverySettingLength = 8;
+    this.DeliverySettingLastColumn = this.DeliverySettingFirstColumn + this.DeliverySettingLength - 1;
     this.FirstDataRow = 3;
     this.RainfallProbabilityPercentColumn = 4;
     // 排他待機時間
@@ -128,8 +128,8 @@ class SpreadSheet {
     return this.searchRow(this.UserIdColumn, userId);
   }
 
-  getWeekdayRangeByUser(index) {
-    return [index, this.DeliverySettingFirstColumn, 1, this.SettingLength];
+  getUserSettingRange(index) {
+    return [index, this.DeliverySettingFirstColumn, 1, this.DeliverySettingLength];
   }
 
   setDeliverySettings(userId, settings) {
@@ -137,7 +137,7 @@ class SpreadSheet {
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return false;
     const values = [settings];
-    this.setValues(values, ...this.getWeekdayRangeByUser(userIdIndex));
+    this.setValues(values, ...this.getUserSettingRange(userIdIndex));
     this.releaseEditLock();
     return true;
   }
@@ -145,8 +145,16 @@ class SpreadSheet {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return [];
-    const settings = this.sheet.getRange(...this.getWeekdayRangeByUser(userIdIndex)).getValues();
+    const settings = this.sheet.getRange(...this.getUserSettingRange(userIdIndex)).getValues();
     return settings[0];
+  }
+
+  getBaseRainfallProbability(userId) {
+    this.setDeliverySettingSheet();
+    const userIdIndex = this.getUserIndex(userId);
+    if (userIdIndex === 0) return 0;
+    const baseRainfallProbability = this.sheet.getRange(userIdIndex, this.baseRainfallProbabilityColumn).getValue();
+    return baseRainfallProbability;
   }
 
   // 論理削除フラグを変更

@@ -7,8 +7,10 @@ const doGet = (e) => {
     response.result = result;
   } else {
     const settings = sheet.getDeliverySettings(userId);
+    const baseRainfallProbability = sheet.getBaseRainfallProbability(userId);
     if (settings.length) {
       response.settings = settings;
+      response.baseRainfallProbability = baseRainfallProbability;
     } else {
       response.error = `Not Found User: ${userId}`;
     }
