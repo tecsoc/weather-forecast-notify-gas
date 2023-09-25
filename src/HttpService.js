@@ -6,10 +6,10 @@ const doGet = (e) => {
     response.result = sheet.setDeliverySettings(userId, e.parameters.settings, e.parameters.rainfallProbabilites);
   } else {
     const settings = sheet.getDeliverySettings(userId);
-    const baseRainfallProbability = sheet.getBaseRainfallProbability(userId);
+    const baseRainfallProbabilities = sheet.getBaseRainfallProbabilities(userId);
     if (settings.length) {
       response.settings = settings;
-      response.baseRainfallProbability = baseRainfallProbability;
+      response.baseRainfallProbabilities = baseRainfallProbabilities;
     } else {
       response.error = `Not Found User: ${userId}`;
     }

@@ -150,12 +150,12 @@ class SpreadSheet {
     return settings[0];
   }
 
-  getBaseRainfallProbability(userId) {
+  getBaseRainfallProbabilities(userId) {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return 0;
-    const baseRainfallProbability = this.sheet.getRange(userIdIndex, this.baseRainfallProbabilityColumn).getValue();
-    return baseRainfallProbability;
+    const baseRainfallProbabilities = this.sheet.getRange(userIdIndex, this.baseRainfallProbabilityColumn).getValue();
+    return baseRainfallProbabilities;
   }
 
   // 論理削除フラグを変更
