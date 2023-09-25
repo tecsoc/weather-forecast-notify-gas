@@ -270,10 +270,12 @@ class LineApiClient {
   pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityDatas) {
     const lastRangeHour = rainfallProbabilityDatas[rainfallProbabilityDatas.length - 1][1];
     const hourNums = [...rainfallProbabilityDatas.map(item => item[0]), lastRangeHour];
-    const hours = hourNums.map((item) => `${item.toString().padStart(2, "0")}時`);
+    const hours = hourNums.map((item) => `${hourPadding(item)}時`);
     const rainfallProbabilityPercents = rainfallProbabilityDatas.map(item => `${item[2]}%`);
     const color = ["#1B5D9C","#EE6352","#FAC05E","#59CD90","#3099C0"];
-    const altText = [title, ...rainfallProbabilityPercents].join("\n");
+    const rainfallAltTextList = rainfallProbabilityDatas.map((item) => `${hourPadding(item[0])}-${hourPadding(item[1])}時: ${item[2]}%`);
+    const altText = [title, ...rainfallAltTextList].join("\n");
+    console.log(`altText: \n${altText}`);
   
     const json = {
       "type": "flex",

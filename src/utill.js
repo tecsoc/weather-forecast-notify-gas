@@ -48,3 +48,7 @@ const dateToHH = (date) => {
   });
   return dateFormat.format(date);
 }
+
+const hourPadding = (hour) => {
+  return hour.toString().padStart(2, '0');
+}
