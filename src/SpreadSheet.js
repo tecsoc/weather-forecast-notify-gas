@@ -132,12 +132,13 @@ class SpreadSheet {
     return [index, this.DeliverySettingFirstColumn, 1, this.DeliverySettingLength];
   }
 
-  setDeliverySettings(userId, settings) {
+  setDeliverySettings(userId, settings, rainfallProbabilites) {
     this.setDeliverySettingSheet();
     const userIdIndex = this.getUserIndex(userId);
     if (userIdIndex === 0) return false;
     const values = [settings];
     this.setValues(values, ...this.getUserSettingRange(userIdIndex));
+    this.setValue(rainfallProbabilites, userIdIndex, this.baseRainfallProbabilityColumn);
     this.releaseEditLock();
     return true;
   }
@@ -176,7 +177,7 @@ class SpreadSheet {
   insertUser(userId, userName) {
     this.setDeliverySettingSheet();
     const row = this.sheet.getLastRow() + 1;
-    const initialSettings = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+    const initialSettings = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     const values = [[userId, userName, ...initialSettings]];
     this.setValues(values, row, this.UserIdColumn, 1, this.DeliverySettingLastColumn - this.UserIdColumn + 1);
     this.releaseEditLock();
