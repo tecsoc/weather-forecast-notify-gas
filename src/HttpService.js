@@ -63,7 +63,7 @@ const doPost = (e) => {
 
     switch(text){
       case '@今日の天気':
-        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet);
+        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, false);
         break;
         
       case 'デバッグ':

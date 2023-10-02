@@ -224,15 +224,18 @@ class SpreadSheet {
     return pushTargetuserList;
   }
 
-  getRainfallProbabilityPercents() {
+  getRainfallProbabilityPercents(onlyToday) {
     this.setRainfallProbabilitySheet();
     // LINE側が4件までしか対応していないため4件分のデータを取得
     const rainfallProbabilityData = this.sheet.getRange(1, 1, 4, this.sheet.getLastColumn()).getValues();
     console.log(`降水確率:\n${rainfallProbabilityData}`);
+    const today = new Date();
+    const todayStr = dateToYYYYMMDD(today);
     // 2~4列目のみに抽出
     const rainfallProbabilityPercents = rainfallProbabilityData.map((row) => {
+      if(onlyToday && dateToYYYYMMDD(row[0]) !== todayStr) return null;
       return row.slice(1);
-    });
+    }).filter(Boolean)
     return rainfallProbabilityPercents;
   }
 
