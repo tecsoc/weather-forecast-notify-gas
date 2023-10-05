@@ -61,11 +61,14 @@ const doPost = (e) => {
     // テンプレ返信メッセージ
     const templeteMessage = 'このアカウントは基本的に返信に対応してないよ。\n「@今日の天気」と送ると、今日の東京の天気が送られてくるよ！！';
 
+    let args;
     switch(text){
       case '@今日の天気':
         payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, false);
         break;
-        
+      case '@24時間天気':
+        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, true);
+        break;
       case 'デバッグ':
         payload = lineClient.pushTextMessage(payload,'デバッグお疲れ様です');
         break;
