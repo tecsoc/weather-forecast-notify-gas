@@ -177,7 +177,7 @@ class SpreadSheet {
   insertUser(userId, userName) {
     this.setDeliverySettingSheet();
     const row = this.sheet.getLastRow() + 1;
-    const initialSettings = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    const initialSettings = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1];
     const values = [[userId, userName, ...initialSettings]];
     this.setValues(values, row, this.UserIdColumn, 1, this.DeliverySettingLastColumn - this.UserIdColumn + 1);
     this.releaseEditLock();
