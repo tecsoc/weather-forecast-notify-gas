@@ -95,7 +95,7 @@ class LineApiClient {
     console.log(`週間天気予報:\n${weeklyWeatherForecastList}`);
     console.log(`天気概況:\n${weatherOverview}`);
 
-    payload = this.pushLichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercents)
+    payload = this.pushRichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercents)
     payload = this.pushLichWeeklyWeatherForecastMessage(payload, "週間天気予報", weeklyWeatherForecastList);
     payload = this.pushTextMessage(payload, weatherOverview);
     return payload;
@@ -267,7 +267,7 @@ class LineApiClient {
     return payload;
   }
 
-  pushLichRainfallProbabilityMessage(payload, title, rainfallProbabilityDatas) {
+  pushRichRainfallProbabilityMessage(payload, title, rainfallProbabilityDatas) {
     const lastRangeHour = rainfallProbabilityDatas[rainfallProbabilityDatas.length - 1][1];
     const hourNums = [...rainfallProbabilityDatas.map(item => item[0]), lastRangeHour];
     const hours = hourNums.map((item) => `${hourPadding(item)}時`);
