@@ -13,7 +13,7 @@ const pushWeatherForecastForTargetUser = () => {
     to: pushUserIdList,
     messages: []
   };
-  payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
+  payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, true); 
   const response = lineClient.pushMulticastMessage(payload);
   console.log('送信レスポンス：\n', response);
 };
@@ -45,7 +45,7 @@ const sendToDeveopper = () => {
     to: userId,
     messages: []
   };
-  payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet); 
+  payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, true); 
   const response = lineClient.pushMessage(payload);
   console.log('送信レスポンス：\n', response);
 }

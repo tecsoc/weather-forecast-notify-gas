@@ -86,7 +86,7 @@ class LineApiClient {
     return payload;
   }
 
-  createTemplateWeatherForecastMessage(payload, sheet, onlyToday = true) {
+  createTemplateWeatherForecastMessage(payload, sheet, onlyToday) {
     const rainfallProbabilityPercents = sheet.getRainfallProbabilityPercents(onlyToday);
     const weeklyWeatherForecastList = sheet.getWeeklyWeatherForecast();
     const weatherOverview = sheet.getWeatherOverview();

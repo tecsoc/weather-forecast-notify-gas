@@ -64,10 +64,10 @@ const doPost = (e) => {
     let args;
     switch(text){
       case '@今日の天気':
-        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, false);
+        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, true);
         break;
       case '@24時間天気':
-        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, true);
+        payload = lineClient.createTemplateWeatherForecastMessage(payload, sheet, false);
         break;
       case 'デバッグ':
         payload = lineClient.pushTextMessage(payload,'デバッグお疲れ様です');
