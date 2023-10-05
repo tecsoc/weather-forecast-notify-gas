@@ -59,7 +59,7 @@ const doPost = (e) => {
     // 送信されてきたテキストを取り出し
     const text = event.message.text;
     // テンプレ返信メッセージ
-    const templeteMessage = 'このアカウントは基本的に返信に対応してないよ。\n「@今日の天気」と送ると、今日の東京の天気が送られてくるよ！！';
+    const templateMessage = 'このアカウントは基本的に返信に対応してないよ。\n「@今日の天気」と送ると今日の東京の天気が、「@24時間天気」と送ると24時間の天気予報が送られてくるよ！！';
 
     let args;
     switch(text){
@@ -74,7 +74,7 @@ const doPost = (e) => {
         break;
         
       default:
-        const message = text.match(/おうむ|オウム/) ? 'オウムじゃないよ？？' : templeteMessage;
+        const message = text.match(/おうむ|オウム/) ? 'オウムじゃないよ？？' : templateMessage;
         payload = lineClient.pushTextMessage(payload, message);
         break;
     }

@@ -94,8 +94,9 @@ class LineApiClient {
     console.log(`降水確率:\n${rainfallProbabilityPercents}`);
     console.log(`週間天気予報:\n${weeklyWeatherForecastList}`);
     console.log(`天気概況:\n${weatherOverview}`);
-
-    payload = this.pushRichRainfallProbabilityMessage(payload, "今日の東京の天気", rainfallProbabilityPercents)
+    
+    const title = `${onlyToday ? '今日' : '24時間'}の東京の天気`;
+    payload = this.pushRichRainfallProbabilityMessage(payload, title, rainfallProbabilityPercents)
     payload = this.pushLichWeeklyWeatherForecastMessage(payload, "週間天気予報", weeklyWeatherForecastList);
     payload = this.pushTextMessage(payload, weatherOverview);
     return payload;
@@ -421,6 +422,14 @@ class LineApiClient {
     }
     
     payload.messages.push(json);
+    return payload;
+  }
+
+  setQuickReply(payload, items) {
+    const quickReply = {
+      "items": items
+    };
+    payload['messages'][0]['quickReply'] = quickReply;
     return payload;
   }
 }
