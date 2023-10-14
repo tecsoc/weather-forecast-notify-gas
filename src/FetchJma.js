@@ -662,7 +662,7 @@ class FetchJma {
       const endDate = new Date(dateStr);
       endDate.setHours(endDate.getHours() + 6);
       return [
-        dateToYYYYMMDD(startDate),
+        dateYYYYMMDD(startDate),
         dateToHH(startDate),
         dateToHH(endDate),
         pops[i],
@@ -696,7 +696,7 @@ class FetchJma {
     // ex.) [ [日付, 天気, 降水確率, 信頼度], [日付, 天気, 降水確率, 信頼度], ... ]
     const weatherForecastList = timeDefines.map((dateStr, i) => {
       const date = new Date(dateStr);
-      return [dateToYYYYMMDD(date), weathers[i], pops[i], reliabilities[i]];
+      return [dateYYYYMMDD(date), weathers[i], pops[i], reliabilities[i]];
     });
 
     return weatherForecastList;

@@ -230,10 +230,10 @@ class SpreadSheet {
     const rainfallProbabilityData = this.sheet.getRange(1, 1, 4, this.sheet.getLastColumn()).getValues();
     console.log(`降水確率:\n${rainfallProbabilityData}`);
     const today = new Date();
-    const todayStr = dateToYYYYMMDD(today);
+    const todayStr = dateYYYYMMDD(today);
     // 2~4列目のみに抽出
     const rainfallProbabilityPercents = rainfallProbabilityData.map((row) => {
-      if(onlyToday && dateToYYYYMMDD(row[0]) !== todayStr) return null;
+      if(onlyToday && dateYYYYMMDD(row[0]) !== todayStr) return null;
       return row.slice(1);
     }).filter(Boolean)
     return rainfallProbabilityPercents;
@@ -252,7 +252,7 @@ class SpreadSheet {
     weeklyWeatherForecastList.forEach((row) => {
       const dateObject = new Date(row[0]);
       const weekdayStr = getWeekdayStr(dateObject);
-      row[0] = `${dateToYYYYMMDD(dateObject)}(${weekdayStr})`;
+      row[0] = `${dateYYYYMMDD(dateObject)}(${weekdayStr})`;
       row[2] += row[2] ? "%" : "-";
       row[3] = row[3] || "-";
       return row;

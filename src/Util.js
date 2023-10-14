@@ -31,7 +31,7 @@ const getTodayTargetUserList = () => {
   console.log(`送信対象ユーザーIDリスト: ${targetUserList}`);
 };
 
-const dateToYYYYMMDD = (date) => {
+const dateYYYYMMDD = (date) => {
   const dateFormat = Intl.DateTimeFormat('ja-JP', {
     timeZone: 'Asia/Tokyo',
     year: 'numeric',
