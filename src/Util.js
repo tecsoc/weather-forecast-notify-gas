@@ -34,7 +34,6 @@ const getTodayTargetUserList = () => {
 const dateYYYYMMDD = (date) => {
   const dateFormat = Intl.DateTimeFormat('ja-JP', {
     timeZone: 'Asia/Tokyo',
-    year: 'numeric',
     month: '2-digit',
     day: '2-digit'
   });
