@@ -28,7 +28,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 8.15.9
       - name: pnmp install
         run: pnpm install --frozen-lockfile --prefer-offline
       - name: Setup clasp
