@@ -11,9 +11,14 @@
     "deploy": "clasp deploy"
   },
   "dependencies": {
-    "@google/clasp": "^2.4.2"
+    "@google/clasp": "^3.4.1"
   },
   "devDependencies": {
     "@types/google-apps-script": "^1.0.75"
+  },
+  "pnpm": {
+    "overrides": {
+      "zod@<4.6.6": "^4.6.7"
+    }
   }
 }
